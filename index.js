@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const morgan     = require('morgan');
 const bluebird   = require('bluebird');
 
+
+
 const config = require('./config');
 const routes = require('./routes');
 
@@ -24,3 +26,9 @@ app.listen(config.server.port, () => {
 });
 
 module.exports = app;
+
+
+//Swagger
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
