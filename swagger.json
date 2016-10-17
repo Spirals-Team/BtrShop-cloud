@@ -4,7 +4,6 @@
     "version": "1.0.0",
     "title": "Swagger btrshop-cloud"
   },
-  "host": "localhost:8080",
   "consumes": [
     "application/json"
   ],
