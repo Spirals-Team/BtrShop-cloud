@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Coca Cola 1 l",
+    "ean": "5449000017888",
+    "description": "Boisson caféiné avec des extraits de plantes. Rafraîchissant et vivifiant",
+    "category": "Drink",
+    "poids": "0.9"
+  },
+  {
+    "name": "iPad",
+    "ean": "0885909462872",
+    "description": "Le meilleur de la tablette",
+    "category": "Electronic",
+    "poids": "2.9"
+  },
+  {
+    "name": "Fanta 2 l",
+    "ean": "5449120017888",
+    "description": "Boisson orangisé avec des extraits de plantes. Rafraîchissant et vivifiant",
+    "category": "Drink",
+    "poids": "0.9"
+  },
+  {
+    "name": "Doritos Cool American",
+    "ean": "8710398603906",
+    "description": "Délicieux chips croquantes",
+    "category": "Food",
+    "poids": "0.5"
+  },
+  {
+    "name": "Doritos Nacho Cheese",
+    "ean": "8710398603890",
+    "description": "Délicieux chips croquantes et au fromage",
+    "category": "Food",
+    "poids": "0.5"
+  },
+  {
+    "name": "The Sims 2 - Ikea Home Stuff",
+    "ean": "5030930066444",
+    "description": "Jeu vidéo peu addictif",
+    "category": "Video Game",
+    "poids": "0.1"
+  },
+  {
+    "name": "Blizzard World of Warcraft",
+    "ean": "3348542214323",
+    "description": "Jeu vidéo très addictif",
+    "category": "Video Game",
+    "poids": "0.1"
+  }
+]

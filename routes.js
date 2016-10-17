@@ -2,7 +2,7 @@ const Router = require('express').Router;
 const router = new Router();
 
 const user  = require('./model/user/user-router');
-const pet  = require('./model/pet/pet-router');
+const product  = require('./model/product/product-router');
 
 
 router.route('/').get((req, res) => {
@@ -10,7 +10,7 @@ router.route('/').get((req, res) => {
 });
 
 router.use('/user', user);
-router.use('/pet', pet);
+router.use('/product', product);
 
 
 module.exports = router;
