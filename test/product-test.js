@@ -12,14 +12,15 @@ describe("Products get test",function(){
 
   //Clean up db
   beforeEach(function(done) {
-    mongoose.connect('mongodb://localhost:27017/btrshop-cloud', function(){
+    mongoose.connect(process.env.MONGO_DB_URI || 'mongodb://localhost/btrshop-cloud', function(){
       mongoose.connection.db.dropDatabase(function(){
         //console.log('db drop') ;
+        mongoose.connection.collection('products').insertMany(parsedJSON, function(err,r) {
+          //console.log('db feeded');
+          done();
+        });
       });
-      mongoose.connection.collection('products').insertMany(parsedJSON, function(err,r) {
-        //console.log('db feeded');
-        done();
-      });
+
     });
   });
 
