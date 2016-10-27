@@ -4,6 +4,8 @@ const helmet     = require('helmet');
 const bodyParser = require('body-parser');
 const morgan     = require('morgan');
 const bluebird   = require('bluebird');
+const expressValidator = require('express-validator');
+const barcoder   = require('barcoder');
 
 const config = require('./config');
 const routes = require('./routes');
@@ -13,10 +15,21 @@ const app  = express();
 mongoose.Promise = bluebird;
 mongoose.connect(config.mongo.url);
 
-app.use(helmet());
+// Validator options
+var options = expressValidator({
+ customValidators: {
+    isEan: function(value) {
+        return barcoder.validate(value);
+    }
+ }
+});
+//END : Validator options
+
+app.use(helmet()); // secure Express/Connect apps with various HTTP headers
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(morgan('tiny'));
+app.use(expressValidator(options)); // validator middleware
+app.use(morgan('tiny')); // HTTP request logger middleware
 app.use('/', routes);
 
 app.listen(config.server.port, () => {
