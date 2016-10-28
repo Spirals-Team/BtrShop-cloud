@@ -41,5 +41,5 @@ module.exports = app;
 //Swagger
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-swaggerDocument.host="localhost:" + config.server.port;
+swaggerDocument.host = config.swaggerurl;
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

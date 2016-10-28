@@ -11,7 +11,7 @@
     "application/json"
   ],
   "paths": {
-    "/product": {
+    "/products": {
       "get": {
         "summary": "List all products",
         "operationId": "listProduct",
@@ -113,6 +113,38 @@
           "default": {
             "description": "unexpected error",
             "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        }
+      }
+    },
+    "/products/{ean}": {
+      "get": {
+        "summary": "Info for a specific product",
+        "operationId": "showProductByEan",
+        "tags": [
+          "products"
+        ],
+        "parameters": [
+          {
+            "name" : "ean",
+            "in" : "path",
+            "required" : true,
+            "description": "The ean of the product to retrieve",
+            "type": "string"
+          }
+        ],
+        "reponses": {
+          "200": {
+            "description": "Excected response to a valid request",
+            "schema" : {
+              "$ref": "#/definitions/Product"
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "schema" : {
               "$ref": "#/definitions/Error"
             }
           }
