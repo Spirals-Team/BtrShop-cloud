@@ -27,7 +27,7 @@ describe("Products",function(){
   describe("Find",function(){
     it("should return list of product",function(done){
       server
-      .get("/product")
+      .get("/products")
       .expect("Content-type",/json/)
       .expect(200)
       .end(function(err,res){
@@ -37,45 +37,31 @@ describe("Products",function(){
       });
     });
 
-    it("should return empty list of product cause of bad param",function(done){
+    it("should return 400 cause of bad param",function(done){
       server
-      .get("/product?test=0885909462872")
+      .get("/products?test=0885909462872")
       .expect("Content-type",/json/)
-      .expect(200)
+      .expect(400)
       .end(function(err,res){
-        res.status.should.equal(200);
-        res.body.length.should.be.eql(0);
+        res.status.should.equal(400);
         done();
       });
     });
 
-    it("should return empty list of product cause of empty param",function(done){
+    it("should return 400 cause of empty param",function(done){
       server
-      .get("/product?test=")
+      .get("/products?test=")
       .expect("Content-type",/json/)
-      .expect(200)
+      .expect(400)
       .end(function(err,res){
-        res.status.should.equal(200);
-        res.body.length.should.be.eql(0);
-        done();
-      });
-    });
-
-    it("should return a single product",function(done){
-      server
-      .get("/product?ean=0885909462872")
-      .expect("Content-type",/json/)
-      .expect(200)
-      .end(function(err,res){
-        res.status.should.equal(200);
-        res.body.length.should.be.eql(1);
+        res.status.should.equal(400);
         done();
       });
     });
 
     it("should return a 400 cause of string ean",function(done){
       server
-      .get("/product?ean=dfdfdffd")
+      .get("/products?ean=dfdfdffd")
       .expect("Content-type",/json/)
       .expect(400)
       .end(function(err,res){
@@ -86,7 +72,7 @@ describe("Products",function(){
 
     it("should return a 400 cause of too short ean",function(done){
       server
-      .get("/product?ean=123")
+      .get("/products?ean=123")
       .expect("Content-type",/json/)
       .expect(400)
       .end(function(err,res){
@@ -97,7 +83,53 @@ describe("Products",function(){
 
     it("should return a 400 cause of too long ean",function(done){
       server
-      .get("/product?ean=123456789123456789")
+      .get("/products?ean=123456789123456789")
+      .expect("Content-type",/json/)
+      .expect(400)
+      .end(function(err,res){
+        res.status.should.equal(400);
+        done();
+      });
+    });
+
+
+    it("should return a array with one single product",function(done){
+      server
+      .get("/products/?ean=0885909462872")
+      .expect("Content-type",/json/)
+      .expect(200)
+      .end(function(err,res){
+        res.status.should.equal(200);
+        res.body.length.should.be.eql(1);
+        done();
+      });
+    });
+
+    it("should return a single product",function(done){
+      server
+      .get("/products/0885909462872")
+      .expect("Content-type",/json/)
+      .expect(200)
+      .end(function(err,res){
+        res.status.should.equal(200);
+        done();
+      });
+    });
+
+    it("should return a 400 cause of string ean",function(done){
+      server
+      .get("/products/azeqds")
+      .expect("Content-type",/json/)
+      .expect(400)
+      .end(function(err,res){
+        res.status.should.equal(400);
+        done();
+      });
+    });
+
+    it("should return a 400 cause of bad ean",function(done){
+      server
+      .get("/products/132456")
       .expect("Content-type",/json/)
       .expect(400)
       .end(function(err,res){
@@ -109,9 +141,10 @@ describe("Products",function(){
   });
 
   describe("Add",function(){
-    /*it("should add a single product",function(done){
+
+    it("should add a single product",function(done){
       server
-      .post("/product")
+      .post("/products")
       .send({
         "name": "Fanta Limon 1l",
         "ean": "5449033017888",
@@ -125,7 +158,7 @@ describe("Products",function(){
       .end(function(err,res){
         res.status.should.equal(201);
         server
-        .get("/product")
+        .get("/products")
         .expect("Content-type",/json/)
         .expect(200)
         .end(function(err,res){
@@ -134,11 +167,11 @@ describe("Products",function(){
           done();
         });
       });
-    });*/
+    });
 
-    it("should return an 404 error",function(done){
+    /*it("should return an 404 error",function(done){
       server
-      .post("/product")
+      .post("/products")
       .send({
         "name": "Fanta Limon 1l",
         "ean": "5449033017888",
@@ -153,7 +186,7 @@ describe("Products",function(){
         res.status.should.equal(404);
         done();
       });
-    });
+    });*/
 
   });
 
@@ -161,13 +194,13 @@ describe("Products",function(){
   describe("Remove",function(){
     it("should remove a single product",function(done){
       server
-      .delete("/product")
+      .delete("/products")
       .query({ ean: '5449000017888' })
       .set('Accept', 'application/json')
       .expect(204)
       .end(function(err,res){
         server
-        .get("/product")
+        .get("/products")
         .expect("Content-type",/json/)
         .expect(200)
         .end(function(err,res){
@@ -180,7 +213,7 @@ describe("Products",function(){
 
     it("should return a 400 cause of string ean",function(done){
       server
-      .delete("/product")
+      .delete("/products")
       .query({ ean: 'dsfsdfd' })
       .set('Accept', 'application/json')
       .expect(400)
@@ -192,7 +225,7 @@ describe("Products",function(){
 
     it("should return a 400 cause of too short ean",function(done){
       server
-      .delete("/product")
+      .delete("/products")
       .query({ ean: '123' })
       .set('Accept', 'application/json')
       .expect(400)
@@ -204,7 +237,7 @@ describe("Products",function(){
 
     it("should return a 400 cause of too long ean",function(done){
       server
-      .delete("/product")
+      .delete("/products")
       .query({ ean: '123456798132456798' })
       .set('Accept', 'application/json')
       .expect(400)
@@ -216,7 +249,7 @@ describe("Products",function(){
 
     it("should return a 400 cause of not ean",function(done){
       server
-      .delete("/product")
+      .delete("/products")
       .query({})
       .set('Accept', 'application/json')
       .expect(400)

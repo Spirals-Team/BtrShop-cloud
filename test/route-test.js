@@ -19,7 +19,7 @@ describe("Routes test",function(){
 
   it("should return product list",function(done){
     server
-    .get("/product")
+    .get("/products")
     .expect("Content-type",/json/)
     .expect(200)
     .end(function(err,res){

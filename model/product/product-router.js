@@ -4,12 +4,12 @@ const router = new Router();
 
 router.route('/')
   .get((...args) => controller.find(...args))
-  //.post((...args) => controller.create(...args))
+  .post((...args) => controller.create(...args))
   .delete((...args) => controller.removeByEan(...args));
 
-router.route('/:id')
+router.route('/:ean')
   //.put((...args) => controller.update(...args))
   //.delete((...args) => controller.remove(...args))
-  .get((...args) => controller.findById(...args));
+  .get((...args) => controller.findByEan(...args));
 
 module.exports = router;

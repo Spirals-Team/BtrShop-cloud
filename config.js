@@ -5,7 +5,8 @@ const config = {
   },
   mongo: {
     url: process.env.MONGO_DB_URI || 'mongodb://localhost/btrshop-cloud'
-  }
+  },
+  swaggerurl: process.env.URL_SWAGGER || 'localhost:8080'
 };
 
 module.exports = config;
