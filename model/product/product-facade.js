@@ -4,9 +4,9 @@ const productSchema  = require('./product-schema');
 
 class ProductModel extends Model {
 
-  removeByEan(ean) {
+  removeByEan(eanQuery) {
     return productSchema
-    .find({ean: ean})
+    .find({ ean: eanQuery })
     .remove()
     .exec();
   }
