@@ -8,8 +8,8 @@ router.route('/')
   .delete((...args) => controller.removeByEan(...args));
 
 router.route('/:ean')
-  //.put((...args) => controller.update(...args))
-  //.delete((...args) => controller.remove(...args))
+  // .put((...args) => controller.update(...args))
+  // .delete((...args) => controller.remove(...args))
   .get((...args) => controller.findByEan(...args));
 
 module.exports = router;

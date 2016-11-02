@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "title": "Swagger btrshop-cloud"
   },
-  "schemes" : ["https", "http"],
+  "schemes" : ["http"],
   "consumes": [
     "application/json"
   ],
@@ -156,28 +156,49 @@
   "definitions": {
     "Product": {
       "required": [
-        "id",
         "name",
         "ean",
-        "description",
-        "category",
-        "poids"
+        "description"
       ],
       "properties": {
-        "name": {
-          "type": "string"
-        },
-        "ean": {
-          "type": "string"
-        },
-        "description": {
+        "brand": {
           "type": "string"
         },
         "category": {
           "type": "string"
         },
-        "poids": {
+        "color": {
           "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "depth": {
+          "$ref": "#/definitions/QuantitativeValue"
+        },
+        "ean": {
+          "type": "string"
+        },
+        "height": {
+          "$ref": "#/definitions/QuantitativeValue"
+        },
+        "logo": {
+          "type": "string"
+        },
+        "offers": {
+          "$ref": "#/definitions/Offers"
+        },
+        "model": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "weight": {
+          "$ref": "#/definitions/QuantitativeValue"
+        },
+        "width": {
+          "$ref": "#/definitions/QuantitativeValue"
         }
       }
     },
@@ -185,6 +206,55 @@
       "type": "array",
       "items": {
         "$ref": "#/definitions/Product"
+      }
+    },
+    "QuantitativeValue": {
+      "required": [
+        "unitText",
+        "value"
+      ],
+      "properties": {
+        "minValue": {
+          "type": "float"
+        },
+        "maxValue": {
+          "type": "float"
+        },
+        "unitCode": {
+          "type": "string"
+        },
+        "unitText": {
+          "type": "string"
+        },
+        "value": {
+          "type": "float"
+        }
+      }
+    },
+    "Offers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Offer"
+      }
+    },
+    "Offer": {
+      "required": [
+        "price",
+        "priceCurrency"
+      ],
+      "properties": {
+        "price": {
+          "type": "float"
+        },
+        "priceCurrency": {
+          "type": "string"
+        },
+        "validFrom": {
+          "type": "date"
+        },
+        "validThrough": {
+          "type": "date"
+        }
       }
     },
     "Error": {

@@ -1,38 +1,39 @@
-var supertest = require("supertest");
-var should = require("should");
+/* eslint-env mocha */
+const supertest = require('supertest');
+const should = require('should');
 
 // This agent refers to PORT where program is runninng.
 
-var server = supertest.agent("http://localhost:8080");
+const server = supertest.agent('http://localhost:8080');
 
-describe("Routes test",function(){
-  it("should return home page",function(done){
+describe('Routes test', () => {
+  it('should return home page', (done) => {
     server
-    .get("/")
-    .expect("Content-type",/json/)
+    .get('/')
+    .expect('Content-type', /json/)
     .expect(200)
-    .end(function(err,res){
+    .end((err, res) => {
       res.status.should.equal(200);
       done();
     });
   });
 
-  it("should return product list",function(done){
+  it('should return product list', (done) => {
     server
-    .get("/products")
-    .expect("Content-type",/json/)
+    .get('/products')
+    .expect('Content-type', /json/)
     .expect(200)
-    .end(function(err,res){
+    .end((err, res) => {
       res.status.should.equal(200);
       done();
     });
   });
 
-  it("should return 404",function(done){
+  it('should return 404', (done) => {
     server
-    .get("/random404")
+    .get('/random404')
     .expect(404)
-    .end(function(err,res){
+    .end((err, res) => {
       res.status.should.equal(404);
       done();
     });
