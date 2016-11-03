@@ -74,10 +74,7 @@ class ProductController extends Controller {
   } // END : find
 
   findByEan(req, res, next) {
-
-    console.log("Ok");
-
-
+    
     // Test for invalid params
     const correctParams = _.keys(findSchema);
     const queryParams =   _.keys(req.query);
