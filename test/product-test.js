@@ -118,6 +118,17 @@ describe('Products', () => {
       });
     });
 
+    it('should return an error because product dont exist', (done) => {
+      server
+      .get('/products/3072665220052')
+      .expect('Content-type', /json/)
+      .expect(200)
+      .end((err, res) => {
+        res.status.should.equal(400);
+        done();
+      });
+    });
+
     it('should return a 400 cause of string ean', (done) => {
       server
       .get('/products/azeqds')

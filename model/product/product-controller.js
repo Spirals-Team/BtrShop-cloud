@@ -74,7 +74,7 @@ class ProductController extends Controller {
   } // END : find
 
   findByEan(req, res, next) {
-    
+
     // Test for invalid params
     const correctParams = _.keys(findSchema);
     const queryParams =   _.keys(req.query);
@@ -95,7 +95,13 @@ class ProductController extends Controller {
     }
 
     return this.model.findOne({'ean' : req.params.ean})
-    .then(collection => res.status(200).json(collection))
+    .then(function(collection){
+      if(collection === null){
+        res.send(`No product found with this ean`, 400);
+        return;
+      }
+      return res.status(200).json(collection);
+    })
     .catch(err => next(err));
   } // END : find
 
