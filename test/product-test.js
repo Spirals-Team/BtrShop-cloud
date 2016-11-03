@@ -113,6 +113,7 @@ describe('Products', () => {
       .expect(200)
       .end((err, res) => {
         res.status.should.equal(200);
+        res.body.ean.should.equal('0885909462872');
         done();
       });
     });
