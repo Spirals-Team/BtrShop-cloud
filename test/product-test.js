@@ -2,9 +2,14 @@
 const supertest = require('supertest');
 const should = require('should');
 const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
 // This agent refers to PORT where program is runninng.
 const server = supertest.agent('http://localhost:8080');
+
+/* For local test for coverage, start with : sudo docker-compose -f docker-compose.test.yml -p ci up */
+// const app = require("../index.js");
+// const server = supertest(app);
 
 // Sample produts
 const parsedJSON = require('../mongo-seed/product.json');
@@ -13,26 +18,23 @@ describe('Products', () => {
 
   // Clean up db
   beforeEach((done) => {
-    mongoose.connect(process.env.MONGO_DB_URI || 'mongodb://localhost/btrshop-cloud', () => {
-      mongoose.connection.db.dropDatabase(() => {
-        // console.log('db drop') ;
-        mongoose.connection.collection('products').insertMany(parsedJSON, (err, r) => {
-          // console.log('db feeded');
-          done();
-        });
+    const connection = mongoose.createConnection(process.env.MONGO_DB_URI || 'mongodb://localhost/btrshop-cloud');
+    connection.dropDatabase(() => {
+      // console.log('db drop') ;
+      connection.collection('products').insertMany(parsedJSON, (err, r) => {
+        // console.log('db feeded');
+        done();
       });
-
     });
   });
 
-  describe('Find', () => {
-    it('should return list of product', (done) => {
+  describe('Find', function (){
+    it('should return list of product', function(done) {
       server
       .get('/products')
       .expect('Content-type', /json/)
       .expect(200)
       .end((err, res) => {
-        res.status.should.equal(200);
         res.body.length.should.be.eql(3);
         done();
       });
@@ -44,7 +46,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -55,7 +56,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -66,7 +66,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -77,7 +76,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -88,7 +86,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -96,12 +93,21 @@ describe('Products', () => {
 
     it('should return a array with one single product', (done) => {
       server
-      .get('/products/?ean=0885909462872')
+      .get('/products?ean=0885909462872')
       .expect('Content-type', /json/)
       .expect(200)
       .end((err, res) => {
-        res.status.should.equal(200);
         res.body.length.should.be.eql(1);
+        done();
+      });
+    });
+
+    it('should return an 404 because product dont exist', (done) => {
+      server
+      .get('/products?ean=3072665220052')
+      .expect('Content-type', /json/)
+      .expect(404)
+      .end((err, res) => {
         done();
       });
     });
@@ -112,19 +118,17 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(200)
       .end((err, res) => {
-        res.status.should.equal(200);
         res.body.ean.should.equal('0885909462872');
         done();
       });
     });
 
-    it('should return an error because product dont exist', (done) => {
+    it('should return an 404 because product dont exist', (done) => {
       server
       .get('/products/3072665220052')
       .expect('Content-type', /json/)
-      .expect(200)
+      .expect(404)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -135,7 +139,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -146,7 +149,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -196,32 +198,11 @@ describe('Products', () => {
         .expect('Content-type', /json/)
         .expect(200)
         .end((err, res) => {
-          res.status.should.equal(200);
           res.body.length.should.be.eql(4);
           done();
         });
       });
     });
-
-    /* it("should return an 404 error",function(done){
-      server
-      .post("/products")
-      .send({
-        "name": "Fanta Limon 1l",
-        "ean": "5449033017888",
-        "description": "Boisson citronné avec des extraits de plantes. Rafraîchissant et vivifiant",
-        "category": "Drink",
-        "poids": "0.9"
-      })
-      .expect("Content-type",/json/)
-      .set('Accept', 'application/json')
-      .expect(404)
-      .end(function(err,res){
-        res.status.should.equal(404);
-        done();
-      });
-    });*/
-
   });
 
 
@@ -238,10 +219,20 @@ describe('Products', () => {
         .expect('Content-type', /json/)
         .expect(200)
         .end((err, res) => {
-          res.status.should.equal(200);
           res.body.length.should.be.eql(2);
           done();
         });
+      });
+    });
+
+    it('should return a 400 because product dont exist', (done) => {
+      server
+      .delete('/products')
+      .query({ ean: '3072665220052' })
+      .set('Accept', 'application/json')
+      .expect(404)
+      .end((err, res) => {
+        done();
       });
     });
 
@@ -252,7 +243,6 @@ describe('Products', () => {
       .set('Accept', 'application/json')
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -264,7 +254,6 @@ describe('Products', () => {
       .set('Accept', 'application/json')
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -276,7 +265,6 @@ describe('Products', () => {
       .set('Accept', 'application/json')
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -288,7 +276,6 @@ describe('Products', () => {
       .set('Accept', 'application/json')
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
