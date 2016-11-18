@@ -32,7 +32,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(200)
       .end((err, res) => {
-        res.status.should.equal(200);
         res.body.length.should.be.eql(3);
         done();
       });
@@ -44,7 +43,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -55,7 +53,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -66,7 +63,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -77,7 +73,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -88,7 +83,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -100,7 +94,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(200)
       .end((err, res) => {
-        res.status.should.equal(200);
         res.body.length.should.be.eql(1);
         done();
       });
@@ -112,19 +105,17 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(200)
       .end((err, res) => {
-        res.status.should.equal(200);
         res.body.ean.should.equal('0885909462872');
         done();
       });
     });
 
-    it('should return an error because product dont exist', (done) => {
+    it('should return an 404 because product dont exist', (done) => {
       server
       .get('/products/3072665220052')
       .expect('Content-type', /json/)
-      .expect(200)
+      .expect(404)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -135,7 +126,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -146,7 +136,6 @@ describe('Products', () => {
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -196,32 +185,11 @@ describe('Products', () => {
         .expect('Content-type', /json/)
         .expect(200)
         .end((err, res) => {
-          res.status.should.equal(200);
           res.body.length.should.be.eql(4);
           done();
         });
       });
     });
-
-    /* it("should return an 404 error",function(done){
-      server
-      .post("/products")
-      .send({
-        "name": "Fanta Limon 1l",
-        "ean": "5449033017888",
-        "description": "Boisson citronné avec des extraits de plantes. Rafraîchissant et vivifiant",
-        "category": "Drink",
-        "poids": "0.9"
-      })
-      .expect("Content-type",/json/)
-      .set('Accept', 'application/json')
-      .expect(404)
-      .end(function(err,res){
-        res.status.should.equal(404);
-        done();
-      });
-    });*/
-
   });
 
 
@@ -238,7 +206,6 @@ describe('Products', () => {
         .expect('Content-type', /json/)
         .expect(200)
         .end((err, res) => {
-          res.status.should.equal(200);
           res.body.length.should.be.eql(2);
           done();
         });
@@ -252,7 +219,6 @@ describe('Products', () => {
       .set('Accept', 'application/json')
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -264,7 +230,6 @@ describe('Products', () => {
       .set('Accept', 'application/json')
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -276,7 +241,6 @@ describe('Products', () => {
       .set('Accept', 'application/json')
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });
@@ -288,7 +252,6 @@ describe('Products', () => {
       .set('Accept', 'application/json')
       .expect(400)
       .end((err, res) => {
-        res.status.should.equal(400);
         done();
       });
     });

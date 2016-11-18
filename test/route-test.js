@@ -13,7 +13,6 @@ describe('Routes test', () => {
     .expect('Content-type', /json/)
     .expect(200)
     .end((err, res) => {
-      res.status.should.equal(200);
       done();
     });
   });
@@ -24,7 +23,6 @@ describe('Routes test', () => {
     .expect('Content-type', /json/)
     .expect(200)
     .end((err, res) => {
-      res.status.should.equal(200);
       done();
     });
   });
@@ -34,7 +32,6 @@ describe('Routes test', () => {
     .get('/random404')
     .expect(404)
     .end((err, res) => {
-      res.status.should.equal(404);
       done();
     });
   });
