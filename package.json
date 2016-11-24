@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "test": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec",
+    "test": "istanbul cover node_modules/.bin/_mocha test/*.js",
+    "coveralls": "cat coverage/lcov.info | node_modules/.bin/coveralls",
     "eslint": "eslint . --ext .js",
     "eslintfix": "eslint . --ext .js --fix"
   },
@@ -21,7 +22,7 @@
   "author": "Nicolas Delperdange <nicolas_delperdange@hotmail.com>",
   "dependencies": {
     "barcoder": "^2.0.1",
-    "bluebird": "^3.4.6",
+    "bluebird": "^3.4.1",
     "body-parser": "^1.15.2",
     "coveralls": "^2.11.15",
     "express": "^4.14.0",
