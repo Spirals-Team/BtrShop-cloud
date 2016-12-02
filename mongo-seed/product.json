@@ -1,0 +1,120 @@
+[
+  {
+    "brand": "Coca Cola",
+    "category": "/Alimentaire/Boissons/Sodas",
+    "color": "Noir",
+    "description": "Boisson caféiné avec des extraits de plantes. Rafraîchissant et vivifiant",
+    "depth": {
+
+    },
+    "ean": "5449000017888",
+    "height": {
+      "value": 0.4,
+      "unitcode": "MTR",
+      "unitText": "m"
+    },
+    "logo": "https://sc02.alicdn.com/kf/HTB1tyY_LpXXXXaTaXXXq6xXFXXXO/COCA-COLA-1L-Soft-Drink.jpg",
+    "offers": [
+      {
+        "price": 1.29,
+        "priceCurrency": "€",
+        "validFrom": "2016-10-02T17:32:16.777Z",
+        "validThrough": "2016-12-02T17:32:16.777Z"
+      },
+      {
+        "price": 1.25,
+        "priceCurrency": "€",
+        "validFrom": "2016-12-03T17:32:16.777Z",
+        "validThrough": "2017-01-03T17:32:16.777Z"
+      }
+    ],
+    "model": "1l",
+    "name": "Coca Cola 1 l",
+    "weight": {
+      "value": 1.1,
+      "unitcode": "KGM",
+      "unitText": "kg"
+    },
+    "width": {
+
+    }
+  },
+  {
+    "brand": "Apple",
+    "category": "/Micro_&_multimédia/Tablettes_tactiles_&_graphiques/Tablette_tactile",
+    "color": "Noir",
+    "description": "Le meilleur de la tablette",
+    "depth": {
+      "value": 0.0061,
+      "unitcode": "MTR",
+      "unitText": "m"
+    },
+    "ean": "0885909462872",
+    "height": {
+      "value": 0.24,
+      "unitcode": "MTR",
+      "unitText": "m"
+    },
+    "logo": "http://www.apple.com/ipad-air-2/images/og.jpg?201609050923",
+    "offers": [
+      {
+        "price": 429.90,
+        "priceCurrency": "€",
+        "validFrom": "2016-10-02T17:32:16.777Z",
+        "validThrough": "2016-12-02T17:32:16.777Z"
+      }
+    ],
+    "model": "Wi-Fi",
+    "name": "iPad Air 2",
+    "weight": {
+      "value": 0.437,
+      "unitcode": "KGM",
+      "unitText": "kg"
+    },
+    "width": {
+      "value": 0.1695,
+      "unitcode": "MTR",
+      "unitText": "m"
+    }
+  },
+  {
+    "brand": "Coca Cola",
+    "category": "/Alimentaire/Boissons/Sodas",
+    "color": "Orange",
+    "description": "Boisson orangisé avec des extraits de plantes. Rafraîchissant et vivifiant",
+    "depth": {
+
+    },
+    "ean": "5449000052179",
+    "height": {
+      "value": 0.4,
+      "unitcode": "MTR",
+      "unitText": "m"
+    },
+    "logo": "http://images.woolworthsstatic.co.za/Fanta-Orange-2L-5449000010049.jpg?o=$FdYQq3OWJylQiiRJfsqIt44aBMj&V=hxaG&",
+    "offers": [
+      {
+        "price": 2.29,
+        "priceCurrency": "€",
+        "validFrom": "2016-10-02T17:32:16.777Z",
+        "validThrough": "2016-12-02T17:32:16.777Z"
+      },
+      {
+        "price": 2.25,
+        "priceCurrency": "€",
+        "validFrom": "2016-12-03T17:32:16.777Z",
+        "validThrough": "2017-01-03T17:32:16.777Z"
+      }
+    ],
+    "model": "2l",
+    "name": "Fanta 2l",
+    "weight": {
+      "value": 2.1,
+      "unitcode": "KGM",
+      "unitText": "kg"
+    },
+    "width": {
+
+    }
+  }
+]
