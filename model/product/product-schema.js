@@ -29,9 +29,10 @@ const productSchema = new Schema({
   offers : { type: [Offer] },
   model : { type: String },
   name : { type: String, required: true },
+  positions : [{ type: Schema.Types.ObjectId, ref: 'Position' }],
   weight : { type: QuantitativeValue },
   width : { type: QuantitativeValue }
-}, { timestamps: true });
+}, {_id : true, timestamps: true });
 
 /* Recursive attribute */
 // productSchema.add({ isAccessoryOrSparePartFor: { type: productSchema } });

@@ -8,6 +8,7 @@ router.route('/')
   .delete((...args) => controller.removeByEan(...args));
 
 router.route('/:ean')
-  .get((...args) => controller.findByEan(...args));
+  .get((...args) => controller.findByEan(...args))
+  .post((...args) => controller.postBeaconListWithDistance(...args));
 
 module.exports = router;
