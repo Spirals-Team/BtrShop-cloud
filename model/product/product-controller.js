@@ -1,5 +1,5 @@
 const Controller = require('../../lib/controller');
-const productModel  = require('./product-facade');
+const productFacade  = require('./product-facade');
 const util       = require('util');
 const _          = require('underscore')._;
 
@@ -13,6 +13,10 @@ const findSchema = {
   },
   name:{
     in: 'query',
+    optional: true
+  },
+  listBeaconRange:{
+    in: 'body',
     optional: true
   }
 };
@@ -56,7 +60,8 @@ class ProductController extends Controller {
     if (resCheck.code !== 200) {
       res.status(resCheck.code).send(resCheck.message);
     } else {
-      return this.model.find(req.query)
+      return productFacade
+      .find(req.query)
       .then((collection) => {
         if (collection === null || collection.length === 0) {
           res.status(404).send('No product found with this ean');
@@ -74,7 +79,7 @@ class ProductController extends Controller {
     if (resCheck.code !== 200) {
       res.status(resCheck.code).send(resCheck.message);
     } else {
-      return this.model.findOne({ ean : req.params.ean })
+      return productFacade.findOne({ ean : req.params.ean })
       .then((collection) => {
         if (collection === null || collection.length === 0) {
           res.status(404).send('No product found with this ean');
@@ -91,7 +96,7 @@ class ProductController extends Controller {
     const resCheck = checkParam(req, req.query, true);
 
     if (resCheck.code === 200) {
-      this.model.removeByEan(req.query.ean)
+      productFacade.removeByEan(req.query.ean)
       .then(doc => {
         if (!doc) { return res.status(404).end(); }
         return res.status(204).end();
@@ -102,6 +107,20 @@ class ProductController extends Controller {
     }
   } // END : removeByEan
 
+  postBeaconListWithDistance(req, res, next) {
+    const resCheck = checkParam(req, req.params, true);
+
+    if (resCheck.code !== 200) {
+      res.status(resCheck.code).send(resCheck.message);
+    } else {
+      productFacade.updateBeaconList(req.params.ean, req.body)
+      .then((collection) => {
+        return res.status(200).json(collection);
+      })
+      .catch(err => next(err));
+    }
+  } // END : postBeaconListWithDistance
+
 }
 
-module.exports = new ProductController(productModel);
+module.exports = new ProductController(productFacade);
