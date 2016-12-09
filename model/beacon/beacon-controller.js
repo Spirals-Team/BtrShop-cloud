@@ -1,5 +1,5 @@
 const Controller = require('../../lib/controller');
-const positionModel  = require('./position-facade');
+const beaconFacade  = require('./beacon-facade');
 const util       = require('util');
 const _          = require('underscore')._;
 
@@ -7,7 +7,7 @@ const findSchema = {
 
 };
 
-function checkParam(req, params, eanForced = false) {
+function checkParam(req, params) {
   // Test for invalid params
   const correctParams = _.keys(findSchema);
   const queryParams =   _.keys(params);
@@ -32,26 +32,15 @@ function checkParam(req, params, eanForced = false) {
   return { message: null, code: 200 };
 }
 
-class PositionController extends Controller {
+class BeaconController extends Controller {
 
-  find(req, res, next) {
-    const resCheck = checkParam(req, req.query);
+  updateBeacons(res, req, next){
 
-    if (resCheck.code !== 200) {
-      res.status(resCheck.code).send(resCheck.message);
-    } else {
-      return this.model.find(req.query).populate('_creator')
-      .then((collection) => {
-        if (collection === null || collection.length === 0) {
-          res.status(404).send('No position found with those params');
-          return;
-        }
-        return res.status(200).json(collection);
-      })
-      .catch(err => next(err));
-    }
-  } // END : find
+    //TODO: call proximy
+
+    return null;
+  }
 
 }
 
-module.exports = new PositionController(positionModel);
+module.exports = new BeaconController(beaconFacade);

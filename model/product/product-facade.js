@@ -1,8 +1,6 @@
 const Model = require('../../lib/facade');
 const mongoose = require('mongoose');
 const productSchema  = require('./product-schema');
-const positionFacade  = require('../position/position-facade');
-
 
 class ProductModel extends Model {
 
@@ -13,17 +11,11 @@ class ProductModel extends Model {
     .exec();
   }
 
-  updateBeaconList(eanQuery, beaconList){
+  addPosition(eanQuery, position){
     return productSchema
       .findOne({ean: eanQuery})
       .exec(function(err, product){
-        beaconList.forEach(function(beacon){
-          beacon._creator = new mongoose.Types.ObjectId(product._id);
-          let beaconId = new mongoose.Types.ObjectId();
-          beacon._id = beaconId;
-          let position = positionFacade.create(beacon);
-          product.positions.push(beaconId);
-        });
+        product.positions.push(position);
         return productSchema.update({ean: eanQuery}, product, {upsert: true}).exec();
       });
   }

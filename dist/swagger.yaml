@@ -105,24 +105,22 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     post:
-      summary: Post a new list of nearby beacons related to a product
-      operationId: postBeaconListWithDistance
+      summary: Post a new position
+      operationId: addPosition
       tags:
         - products
       parameters:
         - name: ean
           in: path
           required: true
-          description: The ean of the product to retrieve
+          description: The ean of the product
           type: string
-        - name: beacons
+        - name: position
           in: body
-          description: List of beacons to be added
+          description: Position to be added to the product
           required: true
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Beacon'
+            $ref: '#/definitions/Position'
       responses:
         '200':
           description: product response
@@ -197,14 +195,14 @@ definitions:
       validThrough:
         type: string
         format: date
-  Beacon:
+  Position:
     required:
-      - uuid
-      - distance
+      - lat
+      - lng
     properties:
-      uuid:
-        type: string
-      distance:
+      lat:
+        type: number
+      lng:
         type: number
   Error:
     required:

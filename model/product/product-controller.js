@@ -15,13 +15,13 @@ const findSchema = {
     in: 'query',
     optional: true
   },
-  listBeaconRange:{
+  position:{
     in: 'body',
     optional: true
   }
 };
 
-function checkParam(req, params, eanForced = false) {
+function checkParam(req, params, eanForced = false, positionForced = false) {
   // Test for invalid params
   const correctParams = _.keys(findSchema);
   const queryParams =   _.keys(params);
@@ -33,14 +33,19 @@ function checkParam(req, params, eanForced = false) {
     }
     return null;
   });
-  if (queryCheck)    { return queryCheck; }
+  if (queryCheck) { return queryCheck; }
 
   // Test known params
   req.check(findSchema);
 
   // Test for ean if forced
-  if (eanForced)    {
-    req.check('ean', 'EAN is not valid.').notEmpty().isEan();
+  if (eanForced) {
+    req.check('ean', 'EAN is not valid').notEmpty().isEan();
+  }
+
+  if (positionForced) {
+    req.checkBody('lat' , 'Poisition lat is not valid').notEmpty().isNumeric();
+    req.checkBody('lng' , 'Poisition lng is not valid').notEmpty().isNumeric();
   }
 
 
@@ -107,19 +112,19 @@ class ProductController extends Controller {
     }
   } // END : removeByEan
 
-  postBeaconListWithDistance(req, res, next) {
-    const resCheck = checkParam(req, req.params, true);
+  addPosition(req, res, next) {
+    const resCheck = checkParam(req, req.params, false, true);
 
     if (resCheck.code !== 200) {
       res.status(resCheck.code).send(resCheck.message);
     } else {
-      productFacade.updateBeaconList(req.params.ean, req.body)
+      productFacade.addPosition(req.params.ean, req.body)
       .then((collection) => {
         return res.status(200).json(collection);
       })
       .catch(err => next(err));
     }
-  } // END : postBeaconListWithDistance
+  } // END : addPosition
 
 }
 

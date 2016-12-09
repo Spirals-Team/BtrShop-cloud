@@ -8,14 +8,20 @@ const QuantitativeValue = new Schema({
   unitCode: { type: String },
   unitText: { type: String, required: true },
   value: { type: Number, required: true }
-}, { _id : false });
+}, { _id : false, timestamps: false  });
 
 const Offer = new Schema({
   price: { type: Number, required: true },
   priceCurrency: { type: String, required: true },
   validFrom: { type: Date },
   validThrough: { type: Date, default: Date.now }
-}, { _id : false, timestamps: true });
+}, { _id : false, timestamps: false });
+
+const Position = new Schema({
+  lat: { type: Number  , required: true },
+  lng: { type: Number  , required: true },
+  date : { type: Date, default: Date.now }
+}, { _id : false, timestamps: false  });
 
 const productSchema = new Schema({
   brand: { type: String },
@@ -29,7 +35,7 @@ const productSchema = new Schema({
   offers : { type: [Offer] },
   model : { type: String },
   name : { type: String, required: true },
-  positions : [{ type: Schema.Types.ObjectId, ref: 'Position' }],
+  positions : { type: [Position] },
   weight : { type: QuantitativeValue },
   width : { type: QuantitativeValue }
 }, {_id : true, timestamps: true });

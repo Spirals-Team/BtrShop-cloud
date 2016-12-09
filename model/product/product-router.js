@@ -9,6 +9,6 @@ router.route('/')
 
 router.route('/:ean')
   .get((...args) => controller.findByEan(...args))
-  .post((...args) => controller.postBeaconListWithDistance(...args));
+  .post((...args) => controller.addPosition(...args));
 
 module.exports = router;
