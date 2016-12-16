@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const config = require('../config');
 
 /* For local test for coverage, start with : sudo docker-compose -f docker-compose.test.yml -p ci up */
-const app = require("../index.js");
+const app = require('../index.js');
 const server = supertest.agent(app);
 
 // Sample produts
@@ -22,8 +22,8 @@ describe('Products', () => {
     });
   });
 
-  describe('Find', function (){
-    it('should return list of product', function(done) {
+  describe('Find', () => {
+    it('should return list of product', (done) => {
       server
       .get('/products')
       .expect('Content-type', /json/)

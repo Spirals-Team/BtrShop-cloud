@@ -4,6 +4,6 @@ const router = new Router();
 
 router.route('/')
   .get((...args) => controller.find(...args))
-  .update((...args) => controller.updateBeacons(...args));
+  .post((...args) => controller.updateBeacons(...args));
 
 module.exports = router;
