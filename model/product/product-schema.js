@@ -18,8 +18,8 @@ const Offer = new Schema({
 }, { _id : false, timestamps: false });
 
 const Position = new Schema({
-  lat: { type: Number  , required: true },
-  lng: { type: Number  , required: true },
+  lat: { type: Number, required: true },
+  lng: { type: Number, required: true },
   date : { type: Date, default: Date.now }
 }, { _id : false, timestamps: false  });
 
@@ -38,7 +38,7 @@ const productSchema = new Schema({
   positions : { type: [Position] },
   weight : { type: QuantitativeValue },
   width : { type: QuantitativeValue }
-}, {_id : true, timestamps: true });
+}, { _id : true, timestamps: true });
 
 /* Recursive attribute */
 // productSchema.add({ isAccessoryOrSparePartFor: { type: productSchema } });

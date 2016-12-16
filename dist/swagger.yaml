@@ -130,6 +130,52 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  /beacon:
+    get:
+      summary: List all beacons
+      operationId: listBeacon
+      tags:
+        - beacons
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          type: integer
+          format: int32
+        - name: ean
+          in: query
+          description: Ean query
+          required: false
+          type: string
+      responses:
+        200:
+          description: An array of beacon
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Beacon'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Update all beacons from the list of proximy
+      operationId: updateBeacon
+      tags:
+        - beacons
+      responses:
+        200:
+          description: An array of beacon
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Beacon'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
 definitions:
   Product:
     required:
@@ -180,6 +226,50 @@ definitions:
         type: string
       value:
         type: number
+  Data:
+    properties:
+      instanceid:
+        type: string
+      major:
+        type: number
+      minor:
+        type: number
+      marker:
+        $ref: "#/definitions/Position"
+      namespaceid:
+        type: string
+      uuid:
+        type: string
+  Beacon:
+    properties:
+      createdAt:
+        type: string
+        format: date
+      department_id:
+        type: string
+      data:
+        $ref: '#/definitions/Data'
+      floor_id:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      place_id:
+        type: string
+      organization_id:
+        type: string
+      type:
+        type: string
+      triggerVenueChange:
+        type: boolean
+      triggerFloorChange:
+        type: boolean
+      updatedAt:
+        type: string
+        format: date
+      geopoint:
+        $ref: "#/definitions/Position"
   Offer:
     required:
       - price

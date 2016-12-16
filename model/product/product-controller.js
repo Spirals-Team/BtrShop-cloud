@@ -44,8 +44,8 @@ function checkParam(req, params, eanForced = false, positionForced = false) {
   }
 
   if (positionForced) {
-    req.checkBody('lat' , 'Poisition lat is not valid').notEmpty().isNumeric();
-    req.checkBody('lng' , 'Poisition lng is not valid').notEmpty().isNumeric();
+    req.checkBody('lat', 'Poisition lat is not valid').notEmpty().isNumeric();
+    req.checkBody('lng', 'Poisition lng is not valid').notEmpty().isNumeric();
   }
 
 
@@ -119,9 +119,7 @@ class ProductController extends Controller {
       res.status(resCheck.code).send(resCheck.message);
     } else {
       productFacade.addPosition(req.params.ean, req.body)
-      .then((collection) => {
-        return res.status(200).json(collection);
-      })
+      .then((collection) => res.status(200).json(collection))
       .catch(err => next(err));
     }
   } // END : addPosition
