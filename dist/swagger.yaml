@@ -130,7 +130,7 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /beacon:
+  /beacons:
     get:
       summary: List all beacons
       operationId: listBeacon
