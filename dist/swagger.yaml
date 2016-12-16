@@ -1,0 +1,306 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Swagger btrshop-cloud
+  contact:
+    name: Nicolas D.
+    url: https://github.com/Oupsla
+schemes:
+  - https
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /products:
+    get:
+      summary: List all products
+      operationId: listProduct
+      tags:
+        - products
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          type: integer
+          format: int32
+        - name: ean
+          in: query
+          description: Ean query
+          required: false
+          type: string
+      responses:
+        200:
+          description: An array of products
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create a product
+      operationId: createProducts
+      tags:
+        - products
+      parameters:
+        - name: product
+          in: body
+          description: Product to be added
+          required: true
+          schema:
+            $ref: '#/definitions/Product'
+      responses:
+        '200':
+          description: product response
+          schema:
+            $ref: '#/definitions/Product'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete a product
+      operationId: deleteProducts
+      tags:
+        - products
+      parameters:
+        - name: ean
+          in: query
+          description: Ean of the product to delete
+          required: true
+          type: string
+      responses:
+        '204':
+          description: product response
+          schema:
+            $ref: '#/definitions/Product'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  '/products/{ean}':
+    get:
+      summary: Info for a specific product
+      operationId: showProductByEan
+      tags:
+        - products
+      parameters:
+        - name: ean
+          in: path
+          required: true
+          description: The ean of the product to retrieve
+          type: string
+      responses:
+        '200':
+          description: Excected response to a valid request
+          schema:
+            $ref: '#/definitions/Product'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Post a new position
+      operationId: addPosition
+      tags:
+        - products
+      parameters:
+        - name: ean
+          in: path
+          required: true
+          description: The ean of the product
+          type: string
+        - name: position
+          in: body
+          description: Position to be added to the product
+          required: true
+          schema:
+            $ref: '#/definitions/Position'
+      responses:
+        '200':
+          description: product response
+          schema:
+            $ref: '#/definitions/Product'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /beacon:
+    get:
+      summary: List all beacons
+      operationId: listBeacon
+      tags:
+        - beacons
+      parameters:
+        - name: limit
+          in: query
+          description: How many items to return at one time (max 100)
+          required: false
+          type: integer
+          format: int32
+        - name: ean
+          in: query
+          description: Ean query
+          required: false
+          type: string
+      responses:
+        200:
+          description: An array of beacon
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Beacon'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Update all beacons from the list of proximy
+      operationId: updateBeacon
+      tags:
+        - beacons
+      responses:
+        200:
+          description: An array of beacon
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Beacon'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  Product:
+    required:
+      - name
+      - ean
+      - description
+    properties:
+      brand:
+        type: string
+      category:
+        type: string
+      color:
+        type: string
+      description:
+        type: string
+      depth:
+        $ref: '#/definitions/QuantitativeValue'
+      ean:
+        type: string
+      height:
+        $ref: '#/definitions/QuantitativeValue'
+      logo:
+        type: string
+      offers:
+        type: array
+        items:
+          $ref: '#/definitions/Offer'
+      model:
+        type: string
+      name:
+        type: string
+      weight:
+        $ref: '#/definitions/QuantitativeValue'
+      width:
+        $ref: '#/definitions/QuantitativeValue'
+  QuantitativeValue:
+    required:
+      - unitText
+      - value
+    properties:
+      minValue:
+        type: number
+      maxValue:
+        type: number
+      unitCode:
+        type: string
+      unitText:
+        type: string
+      value:
+        type: number
+  Data:
+    properties:
+      instanceid:
+        type: string
+      major:
+        type: number
+      minor:
+        type: number
+      marker:
+        $ref: "#/definitions/Position"
+      namespaceid:
+        type: string
+      uuid:
+        type: string
+  Beacon:
+    properties:
+      createdAt:
+        type: string
+        format: date
+      department_id:
+        type: string
+      data:
+        $ref: '#/definitions/Data'
+      floor_id:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      place_id:
+        type: string
+      organization_id:
+        type: string
+      type:
+        type: string
+      triggerVenueChange:
+        type: boolean
+      triggerFloorChange:
+        type: boolean
+      updatedAt:
+        type: string
+        format: date
+      geopoint:
+        $ref: "#/definitions/Position"
+  Offer:
+    required:
+      - price
+      - priceCurrency
+    properties:
+      price:
+        type: number
+      priceCurrency:
+        type: string
+      validFrom:
+        type: string
+        format: date
+      validThrough:
+        type: string
+        format: date
+  Position:
+    required:
+      - lat
+      - lng
+    properties:
+      lat:
+        type: number
+      lng:
+        type: number
+  Error:
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
