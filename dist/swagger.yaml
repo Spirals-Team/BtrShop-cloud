@@ -120,7 +120,9 @@ paths:
           description: Position to be added to the product
           required: true
           schema:
-            $ref: '#/definitions/Position'
+            type: array
+            items:
+              $ref: '#/definitions/NewBeacon'
       responses:
         '200':
           description: product response
@@ -293,6 +295,15 @@ definitions:
       lat:
         type: number
       lng:
+        type: number
+  NewBeacon:
+    required:
+      - uuid
+      - dist
+    properties:
+      uuid:
+        type: string
+      dist:
         type: number
   Error:
     required:

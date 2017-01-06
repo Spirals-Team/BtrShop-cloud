@@ -29,6 +29,7 @@
     "express-validator": "^2.21.0",
     "helmet": "^2.1.2",
     "lodash": "^4.15.0",
+    "mathjs": "^3.8.1",
     "mocha-lcov-reporter": "^1.2.0",
     "mongoose": "^4.5.9",
     "morgan": "^1.7.0",

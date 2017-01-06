@@ -33,6 +33,17 @@ function checkParam(req, params, eanForced = false, positionForced = false) {
     }
     return null;
   });
+
+  if (positionForced) {
+    if (!Array.isArray(req.body))
+      queryCheck = { message: `Positions are not an array`, code: 400 };
+
+    req.body.forEach((beacon) => {
+      if(!beacon.uuid || !beacon.dist)
+        queryCheck = { message: `Beacon : ${JSON.stringify(beacon)} is not valid. Require array of {"uuid": "string", "dist": 0}`, code: 400 };
+    });
+  }
+
   if (queryCheck) { return queryCheck; }
 
   // Test known params
@@ -42,12 +53,6 @@ function checkParam(req, params, eanForced = false, positionForced = false) {
   if (eanForced) {
     req.check('ean', 'EAN is not valid').notEmpty().isEan();
   }
-
-  if (positionForced) {
-    req.checkBody('lat', 'Poisition lat is not valid').notEmpty().isDecimal();
-    req.checkBody('lng', 'Poisition lng is not valid').notEmpty().isDecimal();
-  }
-
 
   const errors = req.validationErrors();
   if (errors) {
