@@ -23,9 +23,10 @@ class ProductModel extends Model {
         let validBeacons = [];
         positions.forEach((position) => {
           proximyBeacons.forEach((beaconProximy) => {
-            if(position.uuid === beaconProximy.data.uuid){
+            if(position.uuid.toLowerCase() === beaconProximy.data.uuid.toLowerCase()){
               beaconProximy["dist"] = position.dist;
-              validBeacons.push(beaconProximy);
+              if(!validBeacons.includes(beaconProximy))
+                validBeacons.push(beaconProximy);
             }
           });
         });
@@ -38,14 +39,14 @@ class ProductModel extends Model {
           }
           position = trilateration.trilaterate(beacons);
         }
-
       })
       .then(() => productSchema.findOne({ ean: eanQuery })
       .exec((err, product) => {
-        if(!position)
-          return productSchema.findOne({ ean: eanQuery });
-        product.positions.push(position);
-        return productSchema.update({ ean: eanQuery }, product, { upsert: true }).exec();
+        if(position) {
+          product.positions.push(position);
+          productSchema.update({ ean: eanQuery }, product, { upsert: true }).exec();
+        }
+        return productSchema.findOne({ ean: eanQuery });
       }));
   }
 }

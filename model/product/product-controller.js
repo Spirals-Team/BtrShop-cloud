@@ -124,7 +124,13 @@ class ProductController extends Controller {
       res.status(resCheck.code).send(resCheck.message);
     } else {
       productFacade.addPosition(req.params.ean, req.body)
-      .then((collection) => res.status(200).json(collection))
+      .then((collection) => {
+        if (collection === null || collection.length === 0) {
+          res.status(404).send('No product found with this ean');
+          return;
+        }
+        return res.status(200).json(collection);
+      })
       .catch(err => next(err));
     }
   } // END : addPosition
