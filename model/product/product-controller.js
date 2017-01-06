@@ -44,8 +44,8 @@ function checkParam(req, params, eanForced = false, positionForced = false) {
   }
 
   if (positionForced) {
-    req.checkBody('lat', 'Poisition lat is not valid').notEmpty().isNumeric();
-    req.checkBody('lng', 'Poisition lng is not valid').notEmpty().isNumeric();
+    req.checkBody('lat', 'Poisition lat is not valid').notEmpty().isDecimal();
+    req.checkBody('lng', 'Poisition lng is not valid').notEmpty().isDecimal();
   }
 
 
