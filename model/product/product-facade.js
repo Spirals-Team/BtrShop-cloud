@@ -21,41 +21,43 @@ class ProductModel extends Model {
       .then((proximyBeacons) => {
 
         // Getting beacons
-        let validBeacons = [];
+        const validBeacons = [];
         positions.forEach((position) => {
           proximyBeacons.forEach((beaconProximy) => {
 
-            if(beaconProximy.data.uuid && position.uuid &&
-              position.uuid.toLowerCase() === beaconProximy.data.uuid.toLowerCase()){
-              beaconProximy["dist"] = position.dist;
-              if(!validBeacons.includes(beaconProximy))
+            if (beaconProximy.data.uuid && position.uuid &&
+              position.uuid.toLowerCase() === beaconProximy.data.uuid.toLowerCase()) {
+              beaconProximy.dist = position.dist;
+              if (!validBeacons.includes(beaconProximy))                {
                 validBeacons.push(beaconProximy);
+              }
             }
           });
         });
 
         // Trilate the 3 nearests beacons
-        if(validBeacons.length >= 3) {
-          let beacons = [];
+        if (validBeacons.length >= 3) {
+          const beacons = [];
           for (let i = 0; i < 3; i++) {
-            beacons.push(new trilateration.Beacon(validBeacons[i].data.marker.lat, validBeacons[i].data.marker.lng, validBeacons[i].dist));
+            beacons.push(new trilateration.Beacon(validBeacons[i].data.marker.lat,
+              validBeacons[i].data.marker.lng, validBeacons[i].dist));
           }
           position = trilateration.trilaterate(beacons);
         }
       })
       .then(() => productSchema.findOne({ ean: eanQuery })
       .exec((err, product) => {
-        if(position) {
+        if (position) {
           product.positions.push(position);
 
           // Compute average position
-          let arrayLat = [];
-          let arrayLng = [];
+          const arrayLat = [];
+          const arrayLng = [];
           product.positions.forEach((positionProduct) => {
             arrayLat.push(positionProduct.lat);
             arrayLng.push(positionProduct.lng);
           });
-  
+
           product.averagePosition = {
             lat: math.median(arrayLat),
             lng: math.median(arrayLng)

@@ -9,7 +9,7 @@ class BeaconModel extends Model {
       .then(() => beaconSchema
           .create(beaconsList));
   }
-  
+
 }
 
 module.exports = new BeaconModel(beaconSchema);

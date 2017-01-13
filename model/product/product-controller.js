@@ -35,12 +35,17 @@ function checkParam(req, params, eanForced = false, positionForced = false) {
   });
 
   if (positionForced) {
-    if (!Array.isArray(req.body))
-      queryCheck = { message: `Positions are not an array`, code: 400 };
+    if (!Array.isArray(req.body))      {
+      queryCheck = { message: 'Positions are not an array', code: 400 };
+    }
 
     req.body.forEach((beacon) => {
-      if(!beacon.uuid || !beacon.dist)
-        queryCheck = { message: `Beacon : ${JSON.stringify(beacon)} is not valid. Require array of {"uuid": "string", "dist": 0}`, code: 400 };
+      if (!beacon.uuid || !beacon.dist)        {
+        queryCheck = {
+          message: `Beacon : ${JSON.stringify(beacon)} is not valid.
+        Require array of {"uuid": "string", "dist": 0}`,
+          code: 400 };
+      }
     });
   }
 
