@@ -185,6 +185,8 @@ definitions:
       - ean
       - description
     properties:
+      averagePosition:
+        $ref: "#/definitions/Position"
       brand:
         type: string
       category:

@@ -1,7 +1,8 @@
 const Model = require('../../lib/facade');
 const productSchema  = require('./product-schema');
-const trilateration = require('../../util/trilateration')
-const beaconFacade = require('../beacon/beacon-facade')
+const trilateration = require('../../util/trilateration');
+const beaconFacade = require('../beacon/beacon-facade');
+const math = require('mathjs');
 
 class ProductModel extends Model {
 
@@ -23,7 +24,9 @@ class ProductModel extends Model {
         let validBeacons = [];
         positions.forEach((position) => {
           proximyBeacons.forEach((beaconProximy) => {
-            if(position.uuid.toLowerCase() === beaconProximy.data.uuid.toLowerCase()){
+
+            if(beaconProximy.data.uuid && position.uuid &&
+              position.uuid.toLowerCase() === beaconProximy.data.uuid.toLowerCase()){
               beaconProximy["dist"] = position.dist;
               if(!validBeacons.includes(beaconProximy))
                 validBeacons.push(beaconProximy);
@@ -44,6 +47,20 @@ class ProductModel extends Model {
       .exec((err, product) => {
         if(position) {
           product.positions.push(position);
+
+          // Compute average position
+          let arrayLat = [];
+          let arrayLng = [];
+          product.positions.forEach((positionProduct) => {
+            arrayLat.push(positionProduct.lat);
+            arrayLng.push(positionProduct.lng);
+          });
+  
+          product.averagePosition = {
+            lat: math.median(arrayLat),
+            lng: math.median(arrayLng)
+          };
+
           productSchema.update({ ean: eanQuery }, product, { upsert: true }).exec();
         }
         return productSchema.findOne({ ean: eanQuery });

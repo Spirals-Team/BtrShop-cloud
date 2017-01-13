@@ -24,6 +24,7 @@ const Position = new Schema({
 }, { _id : false, timestamps: false  });
 
 const productSchema = new Schema({
+  averagePosition : { type: Position },
   brand: { type: String },
   category : { type: String },
   color : { type: String },
