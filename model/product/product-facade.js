@@ -42,7 +42,12 @@ class ProductModel extends Model {
             beacons.push(new trilateration.Beacon(validBeacons[i].data.marker.lat,
               validBeacons[i].data.marker.lng, validBeacons[i].dist));
           }
-          position = trilateration.trilaterate(beacons);
+          try {
+            position = trilateration.trilaterate(beacons);
+
+          } catch (e) {
+            console.log(e);
+          }
         }
       })
       .then(() => productSchema.findOne({ ean: eanQuery })
