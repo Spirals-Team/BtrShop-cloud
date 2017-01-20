@@ -22,8 +22,8 @@ describe('Trilateration', () => {
     beacons.push(new trilateration.Beacon(37.417243, -121.961889, 0.234592423446));
     beacons.push(new trilateration.Beacon(37.418692, -121.960194, 0.0548954278262));
     const res = trilateration.trilaterate(beacons);
-    res.lat.should.be.eql(37.4191023738254);
-    res.lng.should.be.eql(-121.96057920839233);
+    res.lat.should.be.eql(37.41910237382539);
+    res.lng.should.be.eql(-121.96057920839236);
     done();
   });
 
