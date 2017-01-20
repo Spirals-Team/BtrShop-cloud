@@ -1,6 +1,9 @@
 /* eslint-env mocha */
 const trilateration = require('../util/trilateration');
 const assert = require('assert');
+const mathjs = require('mathjs');
+
+
 describe('Trilateration', () => {
 
   it('should be ok', (done) => {
@@ -22,8 +25,8 @@ describe('Trilateration', () => {
     beacons.push(new trilateration.Beacon(37.417243, -121.961889, 0.234592423446));
     beacons.push(new trilateration.Beacon(37.418692, -121.960194, 0.0548954278262));
     const res = trilateration.trilaterate(beacons);
-    res.lat.should.be.eql(37.41910237382539);
-    res.lng.should.be.eql(-121.96057920839236);
+    mathjs.round(res.lat, 10).should.be.eql(mathjs.round(37.41910237382539, 10));
+    mathjs.round(res.lng, 10).should.be.eql(mathjs.round(-121.96057920839236, 10));
     done();
   });
 
