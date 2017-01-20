@@ -141,6 +141,7 @@ class ProductController extends Controller {
   } // END : removeByEan
 
   findByBeacons(req, res, next){
+
     let resCheck = {
       code: "404",
       message: "Not implemented yet"

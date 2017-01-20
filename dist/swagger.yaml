@@ -83,6 +83,30 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+  '/products/recommendation':
+     get:
+        summary: Get list of products by beacons
+        operationId: getProductByBeacon
+        tags:
+          - products
+        parameters:
+          - name: uuids
+            in: query
+            description: Uuids of beacons
+            required: true
+            collectionFormat: multi
+            type: array
+            items:
+              type: string
+        responses:
+          '200':
+            description: Excected response to a valid request
+            schema:
+              $ref: '#/definitions/Product'
+          default:
+            description: unexpected error
+            schema:
+              $ref: '#/definitions/Error'
   '/products/{ean}':
     get:
       summary: Info for a specific product
