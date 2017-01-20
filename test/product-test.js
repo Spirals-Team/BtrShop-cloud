@@ -4,7 +4,8 @@ const should = require('should');
 const mongoose = require('mongoose');
 const config = require('../config');
 
-/* For local test for coverage, start with : sudo docker-compose -f docker-compose.test.yml -p ci up */
+/* For local test for coverage, start with :
+sudo docker-compose -f docker-compose.test.yml -p ci up */
 const app = require('../index.js');
 const server = supertest.agent(app);
 
@@ -17,7 +18,7 @@ describe('Products', () => {
 
   // Clean up product db
   beforeEach((done) => {
-    mongoose.connection.collections['products'].drop(error => {
+    mongoose.connection.collections.products.drop(error => {
       mongoose.connection.collection('products').insertMany(parsedProducts, (err, r) => {
         done();
       });
@@ -282,8 +283,8 @@ describe('Products', () => {
   describe('Add position', () => {
 
     // Clean up beacon dbs
-    beforeEach((done) => {
-      mongoose.connection.collections['beacons'].drop(error => {
+    before((done) => {
+      mongoose.connection.collections.beacons.drop(error => {
         mongoose.connection.collection('beacons').insertMany(parsedBeacons, (err, r) => {
           done();
         });
@@ -297,15 +298,15 @@ describe('Products', () => {
       .send(
         [
           {
-            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
             dist: 0.02
           },
           {
-            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A",
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A',
             dist: 0.03
           },
           {
-            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44",
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44',
             dist: 0.04
           }
         ]
@@ -335,13 +336,95 @@ describe('Products', () => {
       });
     });
 
+    it('should return an 404 cause of empty array', (done) => {
+      server
+      .post('/products/5449000017888')
+      .send(
+        [
+          {}
+        ]
+      )
+      .expect('Content-type', /json/)
+      .set('Accept', 'application/json')
+      .expect(404)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+    it('should return an 404 cause of empty array', (done) => {
+      server
+      .post('/products/5449000017888')
+      .send(
+      )
+      .expect('Content-type', /json/)
+      .set('Accept', 'application/json')
+      .expect(404)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+    it('should return an 404 cause of empty uuid in array', (done) => {
+      server
+      .post('/products/5449000017888')
+      .send(
+        [
+          {
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
+            dist: 0.02
+          },
+          {
+            dist: 0.03
+          },
+          {
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44',
+            dist: 0.04
+          }
+        ]
+      )
+      .expect('Content-type', /json/)
+      .set('Accept', 'application/json')
+      .expect(404)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+    it('should return an 404 cause of empty dist in array', (done) => {
+      server
+      .post('/products/5449000017888')
+      .send(
+        [
+          {
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
+            dist: 0.02
+          },
+          {
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A'
+          },
+          {
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44',
+            dist: 0.04
+          }
+        ]
+      )
+      .expect('Content-type', /json/)
+      .set('Accept', 'application/json')
+      .expect(404)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+
     it('should add beacons to list without position cause only one beacon sent', (done) => {
       server
       .post('/products/5449000017888')
       .send(
         [
           {
-            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
             dist: 0.02
           }
         ]
@@ -367,15 +450,15 @@ describe('Products', () => {
       .send(
         [
           {
-            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
             dist: 0.02
           },
           {
-            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
             dist: 0.03
           },
           {
-            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
             dist: 0.04
           }
         ]
@@ -395,23 +478,27 @@ describe('Products', () => {
       });
     });
 
-    it('should add double positions', (done) => {
+    it('should add multiple beacons and one position', (done) => {
 
       server
       .post('/products/5449000017888')
       .send(
         [
           {
-            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
             dist: 0.02
           },
           {
-            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A",
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A',
             dist: 0.03
           },
           {
-            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44",
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44',
             dist: 0.04
+          },
+          {
+            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0',
+            dist: 0.05
           }
         ]
       )
@@ -420,44 +507,23 @@ describe('Products', () => {
       .expect(200)
       .end((err, res) => {
 
-        // Second send to try count
-        server
-        .post('/products/5449000017888')
-        .send(
-          [
-            {
-              uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
-              dist: 0.01
-            },
-            {
-              uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0",
-              dist: 0.05
-            },
-            {
-              uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44",
-              dist: 0.02
-            }
-          ]
-        )
-        .expect('Content-type', /json/)
-        .set('Accept', 'application/json')
-        .expect(200)
-        .end((err, res) => {
-          res.body.positions.length.should.be.equal(2);
+        console.log(res.body);
 
-          // Test positions arrays
-          res.body.positions[0].lat.should.be.a.Number();
-          res.body.positions[0].lng.should.be.a.Number();
-          res.body.positions[0].date.should.be.a.String();
+        res.body.positions.length.should.be.equal(1);
 
-          // Test beacons count
-          res.body.beacons.length.should.be.equal(4);
-          res.body.beacons[0].uuid.should.be.a.String();
-          res.body.beacons[0].count.should.be.a.Number();
+        // Test positions arrays
+        res.body.positions[0].lat.should.be.a.Number();
+        res.body.positions[0].lng.should.be.a.Number();
+        res.body.positions[0].date.should.be.a.String();
 
-          done();
-        }); // End of second end function
+        // Test beacons count
+        res.body.beacons.length.should.be.equal(4);
+        res.body.beacons[0].uuid.should.be.a.String();
+        res.body.beacons[0].count.should.be.a.Number();
+
+        done();
+
       }); // End of first end function
     }); // End of test double addPosition
-  });//End : describe : addPosition
+  });// End : describe : addPosition
 });

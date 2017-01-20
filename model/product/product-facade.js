@@ -44,7 +44,9 @@ class ProductModel extends Model {
           }
           try {
             position = trilateration.trilaterate(beacons);
-          } catch (e) {}
+          } catch (e) {
+            // The trilateration have not worked but it's k
+          }
         }
 
 
@@ -52,7 +54,7 @@ class ProductModel extends Model {
       .then(() => productSchema.findOne({ ean: eanQuery })
       .exec((err, product) => {
 
-        if(!err) {
+        if (!err) {
           // Compute average position
           if (position) {
             product.positions.push(position);
@@ -72,8 +74,8 @@ class ProductModel extends Model {
 
           // Save beacons uuid and count in product
           validBeacons.forEach((beacon) => {
-            if(!product.beacons){
-              let beacons = [];
+            if (!product.beacons) {
+              const beacons = [];
               beacons.push(
                 {
                   uuid: beacon.data.uuid,
@@ -82,14 +84,14 @@ class ProductModel extends Model {
               product.beacons = beacons;
             } else {
               let found = false;
-              for (var i = 0; i < product.beacons.length; i++) {
-                if(product.beacons[i].uuid === beacon.data.uuid) {
+              for (let i = 0; i < product.beacons.length; i++) {
+                if (product.beacons[i].uuid === beacon.data.uuid) {
                   product.beacons[i].count += 1;
                   found = true;
                   break;
                 }
               }
-              if(!found){
+              if (!found) {
                 product.beacons.push({
                   uuid: beacon.data.uuid,
                   count: 1
@@ -97,6 +99,9 @@ class ProductModel extends Model {
               }
             }
           });
+
+          // For mongodb, cause we can't update with an id
+          delete product._id;
 
           productSchema.update({ ean: eanQuery }, product, { upsert: true }).exec();
         }
