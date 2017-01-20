@@ -23,8 +23,14 @@ const Position = new Schema({
   date : { type: Date, default: Date.now }
 }, { _id : false, timestamps: false  });
 
+const BeaconUuid = new Schema({
+  uuid: { type: String, required: true },
+  count: { type: Number }
+}, { _id : false, timestamps: false  });
+
 const productSchema = new Schema({
   averagePosition : { type: Position },
+  beacons: { type: [BeaconUuid] },
   brand: { type: String },
   category : { type: String },
   color : { type: String },

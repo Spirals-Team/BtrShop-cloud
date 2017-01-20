@@ -16,12 +16,12 @@ class ProductModel extends Model {
   addPosition(eanQuery, positions) {
 
     let position = null;
+    const validBeacons = [];
 
     return beaconFacade.find({})
       .then((proximyBeacons) => {
 
-        // Getting beacons
-        const validBeacons = [];
+        // Getting beacons and validate
         positions.forEach((position) => {
           proximyBeacons.forEach((beaconProximy) => {
 
@@ -35,7 +35,7 @@ class ProductModel extends Model {
           });
         });
 
-        // Trilate the 3 nearests beacons
+        // Trilate the 3 valid nearests beacons
         if (validBeacons.length >= 3) {
           const beacons = [];
           for (let i = 0; i < 3; i++) {
@@ -44,35 +44,68 @@ class ProductModel extends Model {
           }
           try {
             position = trilateration.trilaterate(beacons);
-
-          } catch (e) {
-            console.log(e);
-          }
+          } catch (e) {}
         }
+
+
       })
       .then(() => productSchema.findOne({ ean: eanQuery })
       .exec((err, product) => {
-        if (position) {
-          product.positions.push(position);
 
+        if(!err) {
           // Compute average position
-          const arrayLat = [];
-          const arrayLng = [];
-          product.positions.forEach((positionProduct) => {
-            arrayLat.push(positionProduct.lat);
-            arrayLng.push(positionProduct.lng);
-          });
+          if (position) {
+            product.positions.push(position);
 
-          product.averagePosition = {
-            lat: math.median(arrayLat),
-            lng: math.median(arrayLng)
-          };
+            const arrayLat = [];
+            const arrayLng = [];
+            product.positions.forEach((positionProduct) => {
+              arrayLat.push(positionProduct.lat);
+              arrayLng.push(positionProduct.lng);
+            });
+
+            product.averagePosition = {
+              lat: math.median(arrayLat),
+              lng: math.median(arrayLng)
+            };
+          }
+
+          // Save beacons uuid and count in product
+          validBeacons.forEach((beacon) => {
+            if(!product.beacons){
+              let beacons = [];
+              beacons.push(
+                {
+                  uuid: beacon.data.uuid,
+                  count: 1
+                });
+              product.beacons = beacons;
+            } else {
+              let found = false;
+              for (var i = 0; i < product.beacons.length; i++) {
+                if(product.beacons[i].uuid === beacon.data.uuid) {
+                  product.beacons[i].count += 1;
+                  found = true;
+                  break;
+                }
+              }
+              if(!found){
+                product.beacons.push({
+                  uuid: beacon.data.uuid,
+                  count: 1
+                });
+              }
+            }
+          });
 
           productSchema.update({ ean: eanQuery }, product, { upsert: true }).exec();
         }
+
+
         return productSchema.findOne({ ean: eanQuery });
       }));
   }
 }
+
 
 module.exports = new ProductModel(productSchema);
