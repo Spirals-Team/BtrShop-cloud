@@ -140,6 +140,14 @@ class ProductController extends Controller {
     }
   } // END : removeByEan
 
+  findByBeacons(req, res, next){
+    let resCheck = {
+      code: "404",
+      message: "Not implemented yet"
+    };
+    res.status(resCheck.code).send(resCheck.message);
+  }
+
   addPosition(req, res, next) {
     const resCheck = checkBeacon(req.body);
 

@@ -507,8 +507,6 @@ describe('Products', () => {
       .expect(200)
       .end((err, res) => {
 
-        console.log(res.body);
-
         res.body.positions.length.should.be.equal(1);
 
         // Test positions arrays
@@ -523,7 +521,74 @@ describe('Products', () => {
 
         done();
 
+      });
+    });
+
+
+    it('should add double positions', (done) => {
+
+      server
+      .post('/products/5449000017888')
+      .send(
+        [
+          {
+            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
+            dist: 0.02
+          },
+          {
+            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A",
+            dist: 0.03
+          },
+          {
+            uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44",
+            dist: 0.04
+          }
+        ]
+      )
+      .expect('Content-type', /json/)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+
+        // Second send to try count
+        server
+        .post('/products/5449000017888')
+        .send(
+          [
+            {
+              uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
+              dist: 0.01
+            },
+            {
+              uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0",
+              dist: 0.05
+            },
+            {
+              uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44",
+              dist: 0.02
+            }
+          ]
+        )
+        .expect('Content-type', /json/)
+        .set('Accept', 'application/json')
+        .expect(200)
+        .end((err, res) => {
+          res.body.positions.length.should.be.equal(2);
+
+          // Test positions arrays
+          res.body.positions[0].lat.should.be.a.Number();
+          res.body.positions[0].lng.should.be.a.Number();
+          res.body.positions[0].date.should.be.a.String();
+
+          // Test beacons count
+          res.body.beacons.length.should.be.equal(4);
+          res.body.beacons[0].uuid.should.be.a.String();
+          res.body.beacons[0].count.should.be.a.Number();
+
+          done();
+        }); // End of second end function
       }); // End of first end function
     }); // End of test double addPosition
+
   });// End : describe : addPosition
 });

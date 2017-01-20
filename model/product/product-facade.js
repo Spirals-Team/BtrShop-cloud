@@ -28,7 +28,7 @@ class ProductModel extends Model {
             if (beaconProximy.data.uuid && position.uuid &&
               position.uuid.toLowerCase() === beaconProximy.data.uuid.toLowerCase()) {
               beaconProximy.dist = position.dist;
-              if (!validBeacons.includes(beaconProximy))                {
+              if (!validBeacons.includes(beaconProximy)) {
                 validBeacons.push(beaconProximy);
               }
             }
@@ -100,8 +100,6 @@ class ProductModel extends Model {
             }
           });
 
-          // For mongodb, cause we can't update with an id
-          delete product._id;
 
           productSchema.update({ ean: eanQuery }, product, { upsert: true }).exec();
         }
