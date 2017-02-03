@@ -99,10 +99,12 @@ paths:
             items:
               type: string
         responses:
-          '200':
-            description: Excected response to a valid request
+          200:
+            description: An array of products
             schema:
-              $ref: '#/definitions/Product'
+              type: array
+              items:
+                $ref: '#/definitions/Product'
           default:
             description: unexpected error
             schema:
