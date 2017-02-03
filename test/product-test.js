@@ -591,4 +591,94 @@ describe('Products', () => {
     }); // End of test double addPosition
 
   });// End : describe : addPosition
+
+  describe('Recommendation', () => {
+    it('should return list of product', (done) => {
+      server
+      .get('/products/recommendation?uuids=uuid%3DD0D3FA86-CA76-45EC-9BD9-6AF4278200B9')
+      .expect(200)
+      .end((err, res) => {
+        res.body.length.should.be.eql(1);
+        done();
+      });
+    });
+
+    it('should return 400 cause of bad param', (done) => {
+      server
+      .get('/products/recommendation?test=0885909462872')
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+    it('should return 400 cause of bad param', (done) => {
+      server
+      .get('/products/recommendation?uuids=blablad%3DD0D3FA86-CA76-45EC-9BD9-6AF4278200B9')
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+
+    it('should return 400 cause of bad param number', (done) => {
+      server
+      .get('/products/recommendation?uuids=uuid=111')
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+    it('should return 404 cause of no matching beacons', (done) => {
+      server
+      .get('/products/recommendation?uuids=uuid%3CCCD3FA86-CA76-45EC-9BD9-6AF4278200B9')
+      .expect('Content-type', /json/)
+      .expect(404)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+
+    it('should return 400 cause of no params', (done) => {
+      server
+      .get('/products/recommendation')
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+
+  it('should return list of product', (done) => {
+    server
+    .get('/products/recommendation?uuids=uuid%3DD0D3FA86-CA76-45EC-9BD9-6AF4278200B9')
+    .expect(200)
+    .end((err, res) => {
+      res.body.length.should.be.eql(1);
+      res.body[0].ean.should.be.eql('0885909462872');
+      done();
+    });
+  });
+
+
+    it('should return 400 cause of no param', (done) => {
+      server
+      .get('/products/recommendation')
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+
+
+  });
 });

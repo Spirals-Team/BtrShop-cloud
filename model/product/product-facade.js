@@ -108,6 +108,19 @@ class ProductModel extends Model {
         return productSchema.findOne({ ean: eanQuery });
       }));
   }
+
+  findProductsByBeacons(uuidsBeacons) {
+
+    console.log(uuidsBeacons);
+
+    return productSchema
+    .find({'beacons.uuid':
+      {$in: uuidsBeacons}
+    })
+    .exec();
+
+  }
+
 }
 
 

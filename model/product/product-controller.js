@@ -53,6 +53,44 @@ function checkBeacon(beacons) {
 
   return queryCheck;
 }
+
+
+
+
+
+function checkFutureArrayBeacon(query) {
+  let queryCheck = { message: null, code: 200 };
+  if (!query){
+    return { message: `Param doesn't exists`, code: 400 };
+  }
+  let beaconsString = query.uuids
+  // uuid existe
+  if (!beaconsString){
+    return { message: `Param uuids doesn't exists`, code: 400 };
+  }
+  // est une string
+  if (!typeof beaconsString === 'string'){
+    return { message: `Param list : ${JSON.stringify(beaconsString)} is not a string`, code: 400 };
+  }
+  return queryCheck;
+}
+
+function checkArrayBeacon(beacons) {
+  let queryCheck = { message: null, code: 200 };
+
+  if (!Array.isArray(beacons))      {
+    return { message: 'Uuids are not an array', code: 400 };
+  }
+
+  beacons.forEach((beacon, index, beaconArray) => {
+    if (beacon.indexOf("uuid") === -1){
+      queryCheck = { message: `Bad param list : ${JSON.stringify(beacon)} no substring uuid found`, code: 400 };
+    }
+  });
+
+  return queryCheck;
+}
+
 function checkParam(req, params, eanForced = false) {
   // Test for invalid params
   const correctParams = _.keys(findSchema);
@@ -142,12 +180,40 @@ class ProductController extends Controller {
 
   findByBeacons(req, res, next){
 
-    let resCheck = {
-      code: "404",
-      message: "Not implemented yet"
-    };
-    res.status(resCheck.code).send(resCheck.message);
+    const resCheck = checkFutureArrayBeacon(req.query);
+    if (resCheck.code !== 200) {
+      res.status(resCheck.code).send(resCheck.message);
+      return;
+    }
+
+    // explode
+    var beacons = req.query.uuids.split("&");
+    const resCheckTwo = checkArrayBeacon(beacons);
+
+    if (resCheckTwo.code !== 200) {
+      res.status(resCheckTwo.code).send(resCheckTwo.message);
+      return;
+    }
+
+    beacons.forEach((beacon, index, beaconArray) => {
+      beaconArray[index] = beacon.replace('uuid=', '');
+    });
+
+    return productFacade
+    .findProductsByBeacons(beacons)
+    .then((collection) => {
+      if (collection === null || collection.length === 0) {
+        res.status(404).send('No product found with those beacons');
+        return;
+      }
+      return res.status(200).json(collection);
+    })
+    .catch(err => next(err));
+
   }
+
+
+
 
   addPosition(req, res, next) {
     const resCheck = checkBeacon(req.body);

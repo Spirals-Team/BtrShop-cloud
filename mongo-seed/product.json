@@ -75,7 +75,17 @@
       "value": 0.1695,
       "unitcode": "MTR",
       "unitText": "m"
-    }
+    },
+    "beacons": [
+      {
+        "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
+        "count": 2
+      },
+      {
+        "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0",
+        "count": 1
+      }
+    ]
   },
   {
     "brand": "Coca Cola",
@@ -115,6 +125,10 @@
     },
     "width": {
 
+    },
+    "beacons" :{
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0",
+      "count": 1
     }
   }
 ]
