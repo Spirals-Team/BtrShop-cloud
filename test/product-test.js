@@ -593,15 +593,6 @@ describe('Products', () => {
   });// End : describe : addPosition
 
   describe('Recommendation', () => {
-    it('should return list of product', (done) => {
-      server
-      .get('/products/recommendation?uuids=uuid%3DD0D3FA86-CA76-45EC-9BD9-6AF4278200B9')
-      .expect(200)
-      .end((err, res) => {
-        res.body.length.should.be.eql(1);
-        done();
-      });
-    });
 
     it('should return 400 cause of bad param', (done) => {
       server
@@ -636,7 +627,7 @@ describe('Products', () => {
 
     it('should return 404 cause of no matching beacons', (done) => {
       server
-      .get('/products/recommendation?uuids=uuid%3CCCD3FA86-CA76-45EC-9BD9-6AF4278200B9')
+      .get('/products/recommendation?uuids[]=CCCD3FA86-CA76-45EC-9BD9-6AF4278200B9')
       .expect('Content-type', /json/)
       .expect(404)
       .end((err, res) => {
@@ -658,7 +649,7 @@ describe('Products', () => {
 
   it('should return list of product', (done) => {
     server
-    .get('/products/recommendation?uuids=uuid%3DD0D3FA86-CA76-45EC-9BD9-6AF4278200B9')
+    .get('/products/recommendation?uuids[]=D0D3FA86-CA76-45EC-9BD9-6AF4278200B9&uuids[]=D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0')
     .expect(200)
     .end((err, res) => {
       res.body.length.should.be.eql(1);
@@ -677,8 +668,6 @@ describe('Products', () => {
         done();
       });
     });
-
-
 
   });
 });

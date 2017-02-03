@@ -111,7 +111,12 @@ class ProductModel extends Model {
 
   findProductsByBeacons(uuidsBeacons) {
 
+    uuidsBeacons.forEach((beacon, index, array) => {
+      array[index] = array[index].toUpperCase();
+    });
+
     console.log(uuidsBeacons);
+
 
     return productSchema
     .find({'beacons.uuid':
