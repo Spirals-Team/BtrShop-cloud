@@ -1,0 +1,616 @@
+[
+  {
+    "_id": "5881f9c724dfdf4018172805",
+    "createdAt": "2017-01-06T14:47:33.664Z",
+    "data": {
+      "instanceid": null,
+      "major": null,
+      "marker": {
+        "lat": 50.60482932610781,
+        "lng": 3.1492942792354586
+      },
+      "minor": null,
+      "namespaceid": null,
+      "uuid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "c98b45d4-a15c-415f-a947-7ef3b9c92ab8",
+    "name": "qsdqdsqd",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "type": "Custom",
+    "updatedAt": "2017-01-06T14:47:33.664Z",
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172806",
+    "createdAt": "2016-12-16T14:44:39.711Z",
+    "data": {
+      "major": 53392,
+      "marker": {
+        "lat": 50.60479615546209,
+        "lng": 3.1492137908935547
+      },
+      "minor": 55218,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4FBB8A639"
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "ff312510-f967-4b8f-b33e-2dd8d61e36d8",
+    "name": "Green generic",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": false,
+    "triggerVenueChange": false,
+    "type": "iBeacon",
+    "updatedAt": "2016-12-16T14:44:39.711Z",
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172807",
+    "createdAt": "2016-12-16T14:42:00.516Z",
+    "data": {
+      "major": 34491,
+      "marker": {
+        "lat": 50.60479615546209,
+        "lng": 3.1492137908935547
+      },
+      "minor": 51937,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4F34DB6A5"
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "41585d7f-fec1-42e8-8b46-a4d12e067e47",
+    "name": "Purple generic",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": false,
+    "triggerVenueChange": false,
+    "type": "iBeacon",
+    "updatedAt": "2016-12-16T14:42:00.516Z",
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172808",
+    "createdAt": "2016-12-16T14:40:28.168Z",
+    "data": {
+      "major": 21311,
+      "marker": {
+        "lat": 50.60479615546209,
+        "lng": 3.1492137908935547
+      },
+      "minor": 11380,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4AA69C556"
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "3ad00d3c-af2a-4575-b4c8-80db2ff8e0de",
+    "name": "Green bag",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": false,
+    "triggerVenueChange": false,
+    "type": "iBeacon",
+    "updatedAt": "2016-12-16T14:40:28.168Z",
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172809",
+    "createdAt": null,
+    "data": {
+      "major": 37534,
+      "marker": {
+        "lat": 50.604843820017194,
+        "lng": 3.1493254378437996
+      },
+      "minor": 57631,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4F0490ADD",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "f9133341-91c8-4a95-9d8b-4e9df3791ba0",
+    "name": "Yellow bed",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:34:10.921Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf401817280a",
+    "createdAt": null,
+    "data": {
+      "instanceid": null,
+      "major": 4033,
+      "marker": {
+        "lat": 50.6048448839576,
+        "lng": 3.1493274495005603
+      },
+      "minor": 53296,
+      "namespaceid": null,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44"
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "floor_id": null,
+    "id": "c51a7a4f-4824-4df6-8695-b286740aca5d",
+    "name": "Purple shoe",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "place_id": null,
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:34:36.183Z",
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf401817280b",
+    "createdAt": null,
+    "data": {
+      "major": 24564,
+      "marker": {
+        "lat": 50.60488659040274,
+        "lng": 3.149186298251152
+      },
+      "minor": 33195,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "7696337d-fbe2-462c-b4c9-e7b7593fb559",
+    "name": "Green bed",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:37:32.433Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf401817280c",
+    "createdAt": null,
+    "data": {
+      "major": 1753,
+      "marker": {
+        "lat": 50.60476849297496,
+        "lng": 3.1491581350564952
+      },
+      "minor": 6999,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "2d3b3bf9-c14c-4cb9-bfbd-c89490ed69a9",
+    "name": "Blue dog",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T14:38:29.151Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf401817280d",
+    "createdAt": null,
+    "data": {
+      "major": 9763,
+      "marker": {
+        "lat": 50.60479615546209,
+        "lng": 3.1492137908935547
+      },
+      "minor": 14309,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4E3A8CE74",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "d083f3b4-33c1-48a0-a4e7-3b313850fbeb",
+    "name": "Purple door",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:42:09.616Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf401817280e",
+    "createdAt": null,
+    "data": {
+      "major": 24874,
+      "marker": {
+        "lat": 50.604806369299396,
+        "lng": 3.149191327393055
+      },
+      "minor": 19678,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF438FBA0A0",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "9a2786f3-d575-4be5-8ca8-ae18e981a3b0",
+    "name": "Blue fridge",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T08:51:25.216Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf401817280f",
+    "createdAt": null,
+    "data": {
+      "major": 64486,
+      "marker": {
+        "lat": 50.604860630272874,
+        "lng": 3.1492808461189266
+      },
+      "minor": 51218,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "66acd71a-abbf-4650-b5e0-b17426823b37",
+    "name": "Yellow car",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:35:11.805Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172810",
+    "createdAt": null,
+    "data": {
+      "instanceid": null,
+      "major": 2668,
+      "marker": {
+        "lat": 50.604809773911335,
+        "lng": 3.1491997092962265
+      },
+      "minor": 29714,
+      "namespaceid": null,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF44914505B"
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "floor_id": null,
+    "id": "09dadacc-b7f7-4d1a-814f-e6243bbb1d25",
+    "name": "Blue bike",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "place_id": null,
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T08:42:42.338Z",
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172811",
+    "createdAt": null,
+    "data": {
+      "major": 65320,
+      "marker": {
+        "lat": 50.60487126967209,
+        "lng": 3.14926877617836
+      },
+      "minor": 11045,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4BA0691F7",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "3e0189c5-00be-4046-a27b-9141144e99a8",
+    "name": "Yellow fridge",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:27:50.820Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172812",
+    "createdAt": null,
+    "data": {
+      "instanceid": null,
+      "major": 18869,
+      "marker": {
+        "lat": 50.604847862990624,
+        "lng": 3.149254694581032
+      },
+      "minor": 18258,
+      "namespaceid": null,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4858D7726"
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "floor_id": null,
+    "id": "5b2f4415-de60-47f6-9788-b9000ce67c52",
+    "name": "Purple chair",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "place_id": null,
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:45:10.355Z",
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172813",
+    "createdAt": null,
+    "data": {
+      "major": 10537,
+      "marker": {
+        "lat": 50.60482977600152,
+        "lng": 3.1492935866117477
+      },
+      "minor": 30003,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4A9066C36",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "10a48924-0658-4efd-99f6-006e48d01e97",
+    "name": "Green car",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:35:45.205Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172814",
+    "createdAt": null,
+    "data": {
+      "major": 21485,
+      "marker": {
+        "lat": 50.60486084306086,
+        "lng": 3.1491638347506523
+      },
+      "minor": 17320,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4753E7748",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "002617d3-a858-4a8f-a757-3935b0d89d5c",
+    "name": "Pink chair",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:37:13.767Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172815",
+    "createdAt": null,
+    "data": {
+      "major": 62060,
+      "marker": {
+        "lat": 50.604903826218774,
+        "lng": 3.149224184453487
+      },
+      "minor": 17463,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4545C8520",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "83ae9bef-e266-4b8e-925e-3a0ac9fca7cb",
+    "name": "Purple bag",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:28:03.149Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172816",
+    "createdAt": null,
+    "data": {
+      "instanceid": null,
+      "major": 18151,
+      "marker": {
+        "lat": 50.60486637554877,
+        "lng": 3.1492912396788597
+      },
+      "minor": 37677,
+      "namespaceid": null,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF425C9E565"
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "floor_id": null,
+    "id": "8ab1debb-fe04-420e-b26e-58f8502bdfcf",
+    "name": "Green door",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "place_id": null,
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:34:53.687Z",
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172817",
+    "createdAt": null,
+    "data": {
+      "major": 26444,
+      "marker": {
+        "lat": 50.604838287526675,
+        "lng": 3.149191662669182
+      },
+      "minor": 4461,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF42F6319AF",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "769cd9b9-a391-4b46-8cca-1698d210caf1",
+    "name": "Purple dog",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:32:05.311Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172818",
+    "createdAt": null,
+    "data": {
+      "major": 55132,
+      "marker": {
+        "lat": 50.60485254432785,
+        "lng": 3.149265088140964
+      },
+      "minor": 6885,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4AB671BDE",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "7efcce8a-7786-41c8-969c-0b66d3d05200",
+    "name": "Pink bike",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T12:35:58.980Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  },
+  {
+    "_id": "5881f9c724dfdf4018172819",
+    "createdAt": null,
+    "data": {
+      "major": 34584,
+      "marker": {
+        "lat": 50.60486978015635,
+        "lng": 3.1492986157536507
+      },
+      "minor": 2489,
+      "uuid": "D0D3FA86-CA76-45EC-9BD9-6AF4B3F62EF5",
+      "instanceid": null,
+      "namespaceid": null
+    },
+    "department_id": "a63b192a-e76f-4767-9da2-606b7e291eff",
+    "id": "ed6803fc-b8a8-4b96-925b-4e28bd5af2b9",
+    "name": "Pink shoe",
+    "organization_id": "46e0e360-0710-4b25-8657-e89fb58cd673",
+    "triggerFloorChange": null,
+    "triggerVenueChange": null,
+    "type": "iBeacon",
+    "updatedAt": "2017-01-06T14:44:30.280Z",
+    "floor_id": null,
+    "place_id": null,
+    "__v": 0,
+    "geopoint": [
+      {},
+      {}
+    ]
+  }
+]

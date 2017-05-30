@@ -6,10 +6,6 @@ const mathjs = require('mathjs');
 
 describe('Trilateration', () => {
 
-  it('should be ok', (done) => {
-    done();
-  });
-
   it('should raise an exception because two beacons have the same geoloc', (done) => {
     const beacons = [];
     beacons.push(new trilateration.Beacon(12, 12, 2));

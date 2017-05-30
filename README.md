@@ -15,6 +15,10 @@ You only need [Docker](https://docs.docker.com/engine/installation/) and [docker
 
 - Run: `docker-compose up` to run the app. _You might need `sudo` for this one_.
 
+## Overwiew - Swagger
+A swagger that explain the whole API is available (localhost:8080) when the system is started.
+To edit this swagger you have to manually editing the file `dist/swagger.yaml` 
+
 ## Architecture
 
 The project is divided according to Yeoman generator https://github.com/ndelvalle/generator-api and the idea is to be able to scale having a simple architecture.
@@ -33,6 +37,11 @@ The project is divided according to Yeoman generator https://github.com/ndelvall
     |   └───product-facade.js
     |   └───product-router.js
     |   └───product-schema.js
+    ├───beacon/
+    │   └───beacon-controller.js
+    |   └───beacon-facade.js
+    |   └───beacon-router.js
+    |   └───beacon-schema.js
 ```
 
 ### Controller:
@@ -45,7 +54,6 @@ In `lib/facade` you have the basic support for RESTful methods. Because this cla
 
 ### Model:
 The folder `Model` contains the various business objects. This is what defines the schema of business objects, roads and overload controller and facade.
-
 
 ## Tests
 

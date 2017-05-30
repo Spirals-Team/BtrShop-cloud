@@ -21,35 +21,70 @@ const findSchema = {
   }
 };
 
-function checkParam(req, params, eanForced = false, positionForced = false) {
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function checkBeacon(beacons) {
+  let queryCheck = { message: null, code: 200 };
+
+  if (!Array.isArray(beacons))      {
+    return { message: 'Positions are not an array', code: 400 };
+  }
+
+  beacons.forEach((beacon) => {
+
+    if (!beacon.uuid || typeof (beacon.uuid) !== 'string') {
+      queryCheck =  {
+        message: `Uuid of Beacon : ${JSON.stringify(beacon)} is not valid.
+      Require array of {"uuid": "string", "dist": 0}`,
+        code: 400 };
+      return;
+    }
+
+    if (!beacon.dist || !isNumber(beacon.dist)) {
+      queryCheck =  {
+        message: `Dist of beacon : ${JSON.stringify(beacon)} is not valid.
+      Require array of {"uuid": "string", "dist": 0}`,
+        code: 400 };
+      return;
+    }
+  });
+
+  return queryCheck;
+}
+
+function checkArrayBeacon(query) {
+  let queryCheck = { message: null, code: 200 };
+
+  if (!query){
+    return { message: `Param doesn't exists`, code: 400 };
+  }
+
+  let beacons = query.uuids;
+  // uuid existe
+  if (!beacons &&  !Array.isArray(beacons)) {
+    return { message: 'Uuids are not an array', code: 400 };
+  }
+
+  return queryCheck;
+}
+
+
+function checkParam(req, params, eanForced = false) {
   // Test for invalid params
   const correctParams = _.keys(findSchema);
   const queryParams =   _.keys(params);
 
   let queryCheck = null;
+
   queryParams.forEach((param) => {
     if (correctParams.indexOf(param) === -1) {
       queryCheck = { message: `${param} is not a valid param`, code: 400 };
     }
-    return null;
   });
 
-  if (positionForced) {
-    if (!Array.isArray(req.body))      {
-      queryCheck = { message: 'Positions are not an array', code: 400 };
-    }
-
-    req.body.forEach((beacon) => {
-      if (!beacon.uuid || !beacon.dist)        {
-        queryCheck = {
-          message: `Beacon : ${JSON.stringify(beacon)} is not valid.
-        Require array of {"uuid": "string", "dist": 0}`,
-          code: 400 };
-      }
-    });
-  }
-
-  if (queryCheck) { return queryCheck; }
+  if (queryCheck) return queryCheck;
 
   // Test known params
   req.check(findSchema);
@@ -122,8 +157,30 @@ class ProductController extends Controller {
     }
   } // END : removeByEan
 
+  findByBeacons(req, res, next){
+
+    const resCheck = checkArrayBeacon(req.query);
+    if (resCheck.code !== 200) {
+      res.status(resCheck.code).send(resCheck.message);
+      return;
+    }
+
+    return productFacade
+    .findProductsByBeacons(req.query.uuids)
+    .then((collection) => {
+      if (collection === null || collection.length === 0) {
+        res.status(404).send('No product found with those beacons');
+        return;
+      }
+      console.log(collection);
+      return res.status(200).json(collection);
+    })
+    .catch(err => next(err));
+
+  }
+
   addPosition(req, res, next) {
-    const resCheck = checkParam(req, req.params, false, true);
+    const resCheck = checkBeacon(req.body);
 
     if (resCheck.code !== 200) {
       res.status(resCheck.code).send(resCheck.message);
