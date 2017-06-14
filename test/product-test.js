@@ -174,7 +174,7 @@ describe('Products', () => {
             price: 1.29,
             priceCurrency: '€',
             validFrom: '2016-10-02T17:32:16.777Z',
-            validThrough: '2016-12-02T17:32:16.777Z'
+            validThrough: '2018-12-02T17:32:16.777Z'
           }
         ],
         model: '1l',
@@ -207,7 +207,7 @@ describe('Products', () => {
     it('should remove a single product', (done) => {
       server
       .delete('/products')
-      .query({ ean: '5449000017888' })
+      .query({ ean: '0885909462872' })
       .set('Accept', 'application/json')
       .expect(204)
       .end((err, res) => {
@@ -311,10 +311,10 @@ describe('Products', () => {
           }
         ]
       )
-      .expect('Content-type', /json/)
-      .set('Accept', 'application/json')
-      .expect(200)
-      .end((err, res) => {
+	    .expect('Content-type', /json/)
+	    .set('Accept', 'application/json')
+	    .expect(200)
+	    .end((err, res) => {
         res.body.positions.length.should.be.equal(1);
 
         // Test positions arrays
@@ -592,6 +592,160 @@ describe('Products', () => {
 
   });// End : describe : addPosition
 
+  describe('Nearby', () => {
+
+    it('should return 400 cause of bad param', (done) => {
+      server
+      .get('/products/nearby?test=0885909462872')
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+    it('should return 400 cause of bad param', (done) => {
+      server
+      .get('/products/nearby?uuids=blablad%3DD0D3FA86-CA76-45EC-9BD9-6AF4278200B9')
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+
+    it('should return 400 cause of bad param number', (done) => {
+      server
+      .get('/products/nearby?uuids=uuid=111')
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+    it('should return 404 cause of no matching beacons', (done) => {
+      server
+      .get('/products/nearby?uuids[]=CCCD3FA86-CA76-45EC-9BD9-6AF4278200B9')
+      .expect('Content-type', /json/)
+      .expect(404)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+
+    it('should return 400 cause of no params', (done) => {
+      server
+      .get('/products/nearby')
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+
+  it('should return list of product', (done) => {
+    server
+    .get('/products/nearby?uuids[]=D0D3FA86-CA76-45EC-9BD9-6AF4278200B9&uuids[]=D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0')
+    .expect(200)
+    .end((err, res) => {
+      res.body.length.should.be.eql(1);
+      res.body[0].ean.should.be.eql('0885909462872');
+      done();
+    });
+  });
+
+
+    it('should return 400 cause of no param', (done) => {
+      server
+      .get('/products/nearby')
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        done();
+      });
+    });
+
+  });
+  
+	//AddRecommendation
+  describe('AddRecommendation', () => {
+  
+		it('should add recomendations', (done) => {
+		    server
+		    .post('/products/recommendation?ean=5449000017888')
+		    .send(
+		      [
+		        {
+		          ean : '0885909462872'
+		        },
+		        {
+		          ean : '5449000052179'
+		        }
+		      ]
+		    )
+			  .expect('Content-type', /json/)
+			  .set('Accept', 'application/json')
+			  .expect(200)
+			  .end((err, res) => {
+				if(!err){
+				  	res.body.associatedProducts.length.should.be.equal(2);
+			      		res.body.associatedProducts[0].ean.should.be.a.String();
+			      		res.body.associatedProducts[0].count.should.be.a.Number();
+				}
+
+		      done();
+		    });
+		  });
+
+		it('should add recomendations', (done) => {
+		    server
+		    .post('/products/recommendation?ean=0885909462872')
+		    .send(
+		      [
+		        {
+		          ean : '5449000052179'
+		        }
+		      ]
+		    )
+			  .expect('Content-type', /json/)
+			  .set('Accept', 'application/json')
+			  .expect(200)
+			  .end((err, res) => {
+				if(!err){
+				  	res.body.associatedProducts.length.should.be.equal(1);
+			      		res.body.associatedProducts[0].ean.should.be.a.String();
+			      		res.body.associatedProducts[0].count.should.be.a.Number();
+				}
+
+		      done();
+		    });
+		  });
+
+		  it('should return an 404 cause of empty ean in array', (done) => {
+		    server
+		    .post('/products/0885909462872')
+		    .send(
+		      [
+		        {
+		        	ean : '5449000017888'
+		        },
+		        {
+		        }
+		      ]
+		    )
+		    .expect('Content-type', /json/)
+		    .set('Accept', 'application/json')
+		    .expect(404)
+		    .end((err, res) => {
+		      done();
+		    });
+		  });
+  	});// End : describe : addRecommendations
+  
   describe('Recommendation', () => {
 
     it('should return 400 cause of bad param', (done) => {
@@ -606,7 +760,7 @@ describe('Products', () => {
 
     it('should return 400 cause of bad param', (done) => {
       server
-      .get('/products/recommendation?uuids=blablad%3DD0D3FA86-CA76-45EC-9BD9-6AF4278200B9')
+      .get('/products/recommendation?ean=3DD0D3FA86-CA76-45EC-9BD9-6AF4278200B9')
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
@@ -617,7 +771,7 @@ describe('Products', () => {
 
     it('should return 400 cause of bad param number', (done) => {
       server
-      .get('/products/recommendation?uuids=uuid=111')
+      .get('/products/recommendation?ean=ean=111')
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) => {
@@ -625,9 +779,9 @@ describe('Products', () => {
       });
     });
 
-    it('should return 404 cause of no matching beacons', (done) => {
+    it('should return 404 cause of no matching product', (done) => {
       server
-      .get('/products/recommendation?uuids[]=CCCD3FA86-CA76-45EC-9BD9-6AF4278200B9')
+      .get('/products/recommendation?ean=6969696969696')
       .expect('Content-type', /json/)
       .expect(404)
       .end((err, res) => {
@@ -647,27 +801,35 @@ describe('Products', () => {
     });
 
 
-  it('should return list of product', (done) => {
-    server
-    .get('/products/recommendation?uuids[]=D0D3FA86-CA76-45EC-9BD9-6AF4278200B9&uuids[]=D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0')
-    .expect(200)
-    .end((err, res) => {
-      res.body.length.should.be.eql(1);
-      res.body[0].ean.should.be.eql('0885909462872');
-      done();
-    });
-  });
+	it('should return list of products', (done) => {
+	  server
+	  .get('/products/recommendation?eans[]=5449000017888')
+	  .expect(200)
+	  .end((err, res) => {
+		res.body.length.should.be.eql(1);
+		res.body[0].ean.should.be.eql('5449000052179');
+		done();
+	  });
+	});
 
+	it('should return 404 because there is no recommendation', (done) => {
+	  server
+	  .get('/products/recommendation?eans[]=0885909462872')
+	  .expect(404)
+	  .end((err, res) => {
+		done();
+	  });
+	});
 
-    it('should return 400 cause of no param', (done) => {
-      server
-      .get('/products/recommendation')
-      .expect('Content-type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        done();
-      });
-    });
+	it('should return list of products', (done) => {
+	  server
+	  .get('/products/recommendation?eans[]=5449000017888&eans[]=0885909462872')
+	  .expect(200)
+	  .end((err, res) => {
+		res.body.length.should.be.eql(1);
+		done();
+	  });
+	});
 
   });
 });

@@ -37,7 +37,11 @@
     },
     "width": {
 
-    }
+    },
+	"associatedProducts" :{
+	  "ean": "5449000052179",
+	  "count": 2
+	}
   },
   {
     "brand": "Apple",
@@ -129,6 +133,10 @@
     "beacons" :{
       "uuid": "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0",
       "count": 1
-    }
+    },
+	"associatedProducts" :{
+	  "ean": "5449000017888",
+	  "count": 2
+	}
   }
 ]

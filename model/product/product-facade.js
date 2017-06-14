@@ -2,6 +2,7 @@ const Model = require('../../lib/facade');
 const productSchema  = require('./product-schema');
 const trilateration = require('../../util/trilateration');
 const beaconFacade = require('../beacon/beacon-facade');
+const productFacade = require('./product-facade');
 const math = require('mathjs');
 
 class ProductModel extends Model {
@@ -110,7 +111,7 @@ class ProductModel extends Model {
   }
 
   findProductsByBeacons(uuidsBeacons) {
-
+	
     uuidsBeacons.forEach((beacon, index, array) => {
       array[index] = array[index].toUpperCase();
     });
@@ -125,6 +126,60 @@ class ProductModel extends Model {
     .exec();
 
   }
+
+    findProductsByAssociation(eansProducts) {
+
+	
+	eansProducts.forEach((product, index, array) => {
+	    array[index] = array[index].toUpperCase();
+	});
+
+	console.log(eansProducts);
+
+
+	return productSchema
+	    .find({'associatedProducts.ean':
+		   {$in: eansProducts}
+		  })
+	    .exec();
+
+    }
+
+    addAssociation(eanQuery, associations){
+		return productSchema.findOne({ean: eanQuery})
+			.exec((err, product) => {
+				if (!err) {
+					associations.forEach((eanProduct) => {
+						if(!product.associatedProducts){
+							const associatedProducts = [];
+							associatedProducts.push(
+							{
+								ean: eanProduct.ean,
+								count: 1
+							});
+							product.associatedProducts = associatedProducts;
+						} else {
+							let found = false;
+							for(let i = 0; i < product.associatedProducts.length; i++){
+								if(product.associatedProducts[i].ean === eanProduct.ean){
+									product.associatedProducts[i].count += 1;
+									found = true;
+									break;
+								}
+							}
+							if(!found){
+								product.associatedProducts.push({
+									ean: eanProduct.ean,
+									count: 1
+								});
+							}
+						}
+					});
+					productSchema.update({ ean: eanQuery }, product, { upsert: true }).exec();
+				}
+				return productSchema.findOne({ ean: eanQuery });
+			});
+	}
 
 }
 

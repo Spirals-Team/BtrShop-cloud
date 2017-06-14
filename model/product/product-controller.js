@@ -58,13 +58,48 @@ function checkArrayBeacon(query) {
   let queryCheck = { message: null, code: 200 };
 
   if (!query){
-    return { message: `Param doesn't exists`, code: 400 };
+    return { message: `Param doesn\'t exists`, code: 400 };
   }
 
   let beacons = query.uuids;
   // uuid existe
   if (!beacons &&  !Array.isArray(beacons)) {
     return { message: 'Uuids are not an array', code: 400 };
+  }
+
+  return queryCheck;
+}
+
+function checkEans(eans) {
+  if (!Array.isArray(eans)) {
+    return { message: 'Eans are not an array', code: 400 };
+  }
+
+  eans.forEach((item) => {
+    if (!item.ean || typeof (item.ean) !== 'string') {
+      queryCheck =  {
+        message: `Ean of Product : ${JSON.stringify(beacon)} is not valid.
+      Require array of {"ean": "string"}`,
+        code: 400 };
+      return;
+    }
+  });
+
+  	return { message: null, code: 200 };
+}
+
+
+function checkArrayProduct(query) {
+  let queryCheck = { message: null, code: 200 };
+
+  if (!query){
+    return { message: `Param doesn\'t exists`, code: 400 };
+  }
+
+  let products = query.eans;
+  // ean existe
+  if (!products &&  !Array.isArray(products)) {
+    return { message: 'Eans are not an array', code: 400 };
   }
 
   return queryCheck;
@@ -196,6 +231,47 @@ class ProductController extends Controller {
       .catch(err => next(err));
     }
   } // END : addPosition
+
+    findByAssociation(req, res, next){
+	const resCheck = checkArrayProduct(req.query);
+	
+	if (resCheck.code !== 200) {
+	    res.status(resCheck.code).send(resCheck.message);
+	    return;
+	}
+
+	return productFacade
+	    .findProductsByAssociation(req.query.eans)
+	    .then((collection) => {
+		if (collection === null || collection.length === 0) {
+		    res.status(404).send('No product associated with those products');
+		    return;
+		}
+		console.log(collection);
+		return res.status(200).json(collection);
+	    })
+	    .catch(err => next(err));
+
+    } // END : findByAssociation
+
+	addAssociation(req, res, next) {
+	    const resCheck = checkEans(req.body);
+
+	    if (resCheck.code !== 200) {
+	      res.status(resCheck.code).send(resCheck.message);
+	    } else {
+	      productFacade.addAssociation(req.query.ean, req.body)
+	      .then((collection) => {
+		if (collection === null || collection.length === 0) {
+		  res.status(404).send('No product found with this ean');
+		  return;
+		}
+		return res.status(200).json(collection);
+	      })
+	      .catch(err => next(err));
+		}
+		
+  } // END : addAssociation
 
 }
 
