@@ -7,8 +7,12 @@ router.route('/')
   .post((...args) => controller.create(...args))
   .delete((...args) => controller.removeByEan(...args));
 
+router.route('/nearby')
+    .get((...args) => controller.findByBeacons(...args));
+
 router.route('/recommendation')
-  .get((...args) => controller.findByBeacons(...args))
+    .get((...args) => controller.findByAssociation(...args))
+    .post((...args) => controller.addAssociation(...args));
 
 router.route('/:ean')
   .get((...args) => controller.findByEan(...args))

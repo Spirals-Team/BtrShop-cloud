@@ -83,7 +83,8 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-  '/products/recommendation':
+	    
+  '/products/nearby':
      get:
         summary: Get list of products by beacons
         operationId: getProductByBeacon
@@ -109,6 +110,62 @@ paths:
             description: unexpected error
             schema:
               $ref: '#/definitions/Error'
+
+  '/products/recommendation':
+     get:
+        summary: Get list of products by associations
+        operationId: getProductByAssociation
+        tags:
+          - products
+        parameters:
+          - name: eans
+            in: query
+            description: eans of products
+            required: true
+            collectionFormat: multi
+            type: array
+            items:
+              type: string
+        responses:
+          200:
+            description: An array of products
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Product'
+          default:
+            description: unexpected error
+            schema:
+              $ref: '#/definitions/Error'
+     post:
+      summary: Post new associations
+      operationId: addAssociations
+      tags:
+        - products
+      parameters:
+        - name: ean
+          in: path
+          required: true
+          description: The ean of the product
+          type: string
+        - name: eans
+          in: body
+          description: eans of products to be associated
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          schema:
+            $ref: '#/definitions/Product'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
   '/products/{ean}':
     get:
       summary: Info for a specific product
@@ -123,7 +180,7 @@ paths:
           type: string
       responses:
         '200':
-          description: Excected response to a valid request
+          description: Expected response to a valid request
           schema:
             $ref: '#/definitions/Product'
         default:
