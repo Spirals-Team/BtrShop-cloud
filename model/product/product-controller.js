@@ -58,7 +58,7 @@ function checkArrayBeacon(query) {
   let queryCheck = { message: null, code: 200 };
 
   if (!query){
-    return { message: `Param doesn\'t exists`, code: 400 };
+    return { message: `Unknown parameter` + query, code: 400 };
   }
 
   let beacons = query.uuids;
@@ -93,7 +93,7 @@ function checkArrayProduct(query) {
   let queryCheck = { message: null, code: 200 };
 
   if (!query){
-    return { message: `Param doesn\'t exists`, code: 400 };
+    return { message: `Unknown parameter` + query, code: 400 };
   }
 
   let products = query.eans;
@@ -203,10 +203,6 @@ class ProductController extends Controller {
     return productFacade
     .findProductsByBeacons(req.query.uuids)
     .then((collection) => {
-      if (collection === null || collection.length === 0) {
-        res.status(404).send('No product found with those beacons');
-        return;
-      }
       console.log(collection);
       return res.status(200).json(collection);
     })
@@ -243,12 +239,8 @@ class ProductController extends Controller {
 	return productFacade
 	    .findProductsByAssociation(req.query.eans)
 	    .then((collection) => {
-		if (collection === null || collection.length === 0) {
-		    res.status(404).send('No product associated with those products');
-		    return;
-		}
-		console.log(collection);
-		return res.status(200).json(collection);
+			console.log(collection);
+			return res.status(200).json(collection);
 	    })
 	    .catch(err => next(err));
 

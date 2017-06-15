@@ -158,7 +158,7 @@ paths:
               $ref: '#/definitions/Product'
       responses:
         '200':
-          description: Excected response to a valid request
+          description: Expected response to a valid request
           schema:
             $ref: '#/definitions/Product'
         default:
@@ -180,7 +180,7 @@ paths:
           type: string
       responses:
         '200':
-          description: Excected response to a valid request
+          description: Expected response to a valid request
           schema:
             $ref: '#/definitions/Product'
         default:

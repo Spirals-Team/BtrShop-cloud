@@ -99,7 +99,7 @@ describe('Products', () => {
       });
     });
 
-    it('should return an 404 because product dont exist', (done) => {
+    it('should return a 404 because product does not exist', (done) => {
       server
       .get('/products?ean=3072665220052')
       .expect('Content-type', /json/)
@@ -120,7 +120,7 @@ describe('Products', () => {
       });
     });
 
-    it('should return an 404 because product dont exist', (done) => {
+    it('should return a 404 because product does not exist', (done) => {
       server
       .get('/products/3072665220052')
       .expect('Content-type', /json/)
@@ -222,7 +222,7 @@ describe('Products', () => {
       });
     });
 
-    it('should return a 400 because product dont exist', (done) => {
+    it('should return a 404 because product does not exist', (done) => {
       server
       .delete('/products')
       .query({ ean: '3072665220052' })
@@ -343,19 +343,6 @@ describe('Products', () => {
         [
           {}
         ]
-      )
-      .expect('Content-type', /json/)
-      .set('Accept', 'application/json')
-      .expect(404)
-      .end((err, res) => {
-        done();
-      });
-    });
-
-    it('should return an 404 cause of empty array', (done) => {
-      server
-      .post('/products/5449000017888')
-      .send(
       )
       .expect('Content-type', /json/)
       .set('Accept', 'application/json')
@@ -625,12 +612,13 @@ describe('Products', () => {
       });
     });
 
-    it('should return 404 cause of no matching beacons', (done) => {
+    it('should return nothing cause there is no matching beacon', (done) => {
       server
       .get('/products/nearby?uuids[]=CCCD3FA86-CA76-45EC-9BD9-6AF4278200B9')
       .expect('Content-type', /json/)
-      .expect(404)
+      .expect(200)
       .end((err, res) => {
+	res.body.length.should.be.eql(0);
         done();
       });
     });
@@ -812,11 +800,12 @@ describe('Products', () => {
 	  });
 	});
 
-	it('should return 404 because there is no recommendation', (done) => {
+	it('should return nothing cause there is no matching recommendation', (done) => {
 	  server
 	  .get('/products/recommendation?eans[]=0885909462872')
-	  .expect(404)
+	  .expect(200)
 	  .end((err, res) => {
+		res.body.length.should.be.eql(0);
 		done();
 	  });
 	});
