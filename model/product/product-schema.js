@@ -28,9 +28,15 @@ const BeaconUuid = new Schema({
   count: { type: Number }
 }, { _id : false, timestamps: false  });
 
+const ProductEan = new Schema({
+  ean: { type: String, required: true },
+  count: { type: Number }
+}, { _id : false, timestamps: false  });
+
 const productSchema = new Schema({
   averagePosition : { type: Position },
   beacons: { type: [BeaconUuid] },
+  associatedProducts : { type: [ProductEan]},
   brand: { type: String },
   category : { type: String },
   color : { type: String },

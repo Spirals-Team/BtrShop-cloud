@@ -1,130 +1,205 @@
 const Model = require('../../lib/facade');
-const productSchema  = require('./product-schema');
+const productSchema = require('./product-schema');
 const trilateration = require('../../util/trilateration');
 const beaconFacade = require('../beacon/beacon-facade');
+const productFacade = require('./product-facade');
 const math = require('mathjs');
 
 class ProductModel extends Model {
 
-  removeByEan(eanQuery) {
-    return productSchema
-    .find({ ean: eanQuery })
-    .remove()
-    .exec();
-  }
+    removeByEan(eanQuery) {
+        return productSchema
+            .find({
+                ean: eanQuery
+            })
+            .remove()
+            .exec();
+    }
 
-  addPosition(eanQuery, positions) {
+    addPosition(eanQuery, positions) {
 
-    let position = null;
-    const validBeacons = [];
+        let position = null;
+        const validBeacons = [];
 
-    return beaconFacade.find({})
-      .then((proximyBeacons) => {
+        return beaconFacade.find({})
+            .then((proximyBeacons) => {
 
-        // Getting beacons and validate
-        positions.forEach((position) => {
-          proximyBeacons.forEach((beaconProximy) => {
+                // Getting beacons and validate
+                positions.forEach((position) => {
+                    proximyBeacons.forEach((beaconProximy) => {
 
-            if (beaconProximy.data.uuid && position.uuid &&
-              position.uuid.toLowerCase() === beaconProximy.data.uuid.toLowerCase()) {
-              beaconProximy.dist = position.dist;
-              if (!validBeacons.includes(beaconProximy)) {
-                validBeacons.push(beaconProximy);
-              }
-            }
-          });
+                        if (beaconProximy.data.uuid && position.uuid &&
+                            position.uuid.toLowerCase() === beaconProximy.data.uuid.toLowerCase()) {
+                            beaconProximy.dist = position.dist;
+                            if (!validBeacons.includes(beaconProximy)) {
+                                validBeacons.push(beaconProximy);
+                            }
+                        }
+                    });
+                });
+
+                // Trilate the 3 valid nearests beacons
+                if (validBeacons.length >= 3) {
+                    const beacons = [];
+                    for (let i = 0; i < 3; i++) {
+                        beacons.push(new trilateration.Beacon(validBeacons[i].data.marker.lat,
+                            validBeacons[i].data.marker.lng, validBeacons[i].dist));
+                    }
+                    try {
+                        position = trilateration.trilaterate(beacons);
+                    } catch (e) {
+                        // The trilateration have not worked but it's k
+                    }
+                }
+
+
+            })
+            .then(() => productSchema.findOne({
+                    ean: eanQuery
+                })
+                .exec((err, product) => {
+
+                    if (!err) {
+                        // Compute average position
+                        if (position) {
+                            product.positions.push(position);
+
+                            const arrayLat = [];
+                            const arrayLng = [];
+                            product.positions.forEach((positionProduct) => {
+                                arrayLat.push(positionProduct.lat);
+                                arrayLng.push(positionProduct.lng);
+                            });
+
+                            product.averagePosition = {
+                                lat: math.median(arrayLat),
+                                lng: math.median(arrayLng)
+                            };
+                        }
+
+                        // Save beacons uuid and count in product
+                        validBeacons.forEach((beacon) => {
+                            if (!product.beacons) {
+                                const beacons = [];
+                                beacons.push({
+                                    uuid: beacon.data.uuid,
+                                    count: 1
+                                });
+                                product.beacons = beacons;
+                            } else {
+                                let found = false;
+                                for (let i = 0; i < product.beacons.length; i++) {
+                                    if (product.beacons[i].uuid === beacon.data.uuid) {
+                                        product.beacons[i].count += 1;
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                if (!found) {
+                                    product.beacons.push({
+                                        uuid: beacon.data.uuid,
+                                        count: 1
+                                    });
+                                }
+                            }
+                        });
+
+
+                        productSchema.update({
+                            ean: eanQuery
+                        }, product, {
+                            upsert: true
+                        }).exec();
+                    }
+
+
+                    return productSchema.findOne({
+                        ean: eanQuery
+                    });
+                }));
+    }
+
+    findProductsByBeacons(uuidsBeacons) {
+
+        uuidsBeacons.forEach((beacon, index, array) => {
+            array[index] = array[index].toUpperCase();
         });
 
-        // Trilate the 3 valid nearests beacons
-        if (validBeacons.length >= 3) {
-          const beacons = [];
-          for (let i = 0; i < 3; i++) {
-            beacons.push(new trilateration.Beacon(validBeacons[i].data.marker.lat,
-              validBeacons[i].data.marker.lng, validBeacons[i].dist));
-          }
-          try {
-            position = trilateration.trilaterate(beacons);
-          } catch (e) {
-            // The trilateration have not worked but it's k
-          }
-        }
+        console.log(uuidsBeacons);
 
 
-      })
-      .then(() => productSchema.findOne({ ean: eanQuery })
-      .exec((err, product) => {
-
-        if (!err) {
-          // Compute average position
-          if (position) {
-            product.positions.push(position);
-
-            const arrayLat = [];
-            const arrayLng = [];
-            product.positions.forEach((positionProduct) => {
-              arrayLat.push(positionProduct.lat);
-              arrayLng.push(positionProduct.lng);
-            });
-
-            product.averagePosition = {
-              lat: math.median(arrayLat),
-              lng: math.median(arrayLng)
-            };
-          }
-
-          // Save beacons uuid and count in product
-          validBeacons.forEach((beacon) => {
-            if (!product.beacons) {
-              const beacons = [];
-              beacons.push(
-                {
-                  uuid: beacon.data.uuid,
-                  count: 1
-                });
-              product.beacons = beacons;
-            } else {
-              let found = false;
-              for (let i = 0; i < product.beacons.length; i++) {
-                if (product.beacons[i].uuid === beacon.data.uuid) {
-                  product.beacons[i].count += 1;
-                  found = true;
-                  break;
+        return productSchema
+            .find({
+                'beacons.uuid': {
+                    $in: uuidsBeacons
                 }
-              }
-              if (!found) {
-                product.beacons.push({
-                  uuid: beacon.data.uuid,
-                  count: 1
+            })
+            .exec();
+
+    }
+
+    findProductsByAssociation(eansProducts) {
+
+
+        eansProducts.forEach((product, index, array) => {
+            array[index] = array[index].toUpperCase();
+        });
+
+        console.log(eansProducts);
+
+
+        return productSchema
+            .find({
+                'associatedProducts.ean': {
+                    $in: eansProducts
+                }
+            })
+            .exec();
+
+    }
+
+    addAssociation(eanQuery, associations) {
+        return productSchema.findOne({
+                ean: eanQuery
+            })
+            .exec((err, product) => {
+                if (!err) {
+                    associations.forEach((eanProduct) => {
+                        if (!product.associatedProducts) {
+                            const associatedProducts = [];
+                            associatedProducts.push({
+                                ean: eanProduct.ean,
+                                count: 1
+                            });
+                            product.associatedProducts = associatedProducts;
+                        } else {
+                            let found = false;
+                            for (let i = 0; i < product.associatedProducts.length; i++) {
+                                if (product.associatedProducts[i].ean === eanProduct.ean) {
+                                    product.associatedProducts[i].count += 1;
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (!found) {
+                                product.associatedProducts.push({
+                                    ean: eanProduct.ean,
+                                    count: 1
+                                });
+                            }
+                        }
+                    });
+                    productSchema.update({
+                        ean: eanQuery
+                    }, product, {
+                        upsert: true
+                    }).exec();
+                }
+                return productSchema.findOne({
+                    ean: eanQuery
                 });
-              }
-            }
-          });
-
-
-          productSchema.update({ ean: eanQuery }, product, { upsert: true }).exec();
-        }
-
-
-        return productSchema.findOne({ ean: eanQuery });
-      }));
-  }
-
-  findProductsByBeacons(uuidsBeacons) {
-
-    uuidsBeacons.forEach((beacon, index, array) => {
-      array[index] = array[index].toUpperCase();
-    });
-
-    console.log(uuidsBeacons);
-
-
-    return productSchema
-    .find({'beacons.uuid':
-      {$in: uuidsBeacons}
-    })
-    .exec();
-
-  }
+            });
+    }
 
 }
 
