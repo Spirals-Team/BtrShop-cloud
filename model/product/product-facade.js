@@ -165,7 +165,7 @@ class ProductModel extends Model {
             .exec((err, product) => {
                 if (!err) {
                     associations.forEach((eanProduct) => {
-                        if (!product.associatedProducts) {
+                        if (product.associatedProducts === null) {
                             const associatedProducts = [];
                             associatedProducts.push({
                                 ean: eanProduct.ean,
