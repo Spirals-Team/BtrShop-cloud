@@ -164,6 +164,7 @@ class ProductModel extends Model {
             })
             .exec((err, product) => {
                 if (!err) {
+                    console.log(associations);
                     associations.forEach((eanProduct) => {
                         if (product.associatedProducts === null) {
                             const associatedProducts = [];
