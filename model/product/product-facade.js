@@ -169,14 +169,14 @@ class ProductModel extends Model {
                         if (product.associatedProducts === null) {
                             const associatedProducts = [];
                             associatedProducts.push({
-                                ean: eanProduct.ean,
+                                ean: eanProduct,
                                 count: 1
                             });
                             product.associatedProducts = associatedProducts;
                         } else {
                             let found = false;
                             for (let i = 0; i < product.associatedProducts.length; i++) {
-                                if (product.associatedProducts[i].ean === eanProduct.ean) {
+                                if (product.associatedProducts[i].ean === eanProduct) {
                                     product.associatedProducts[i].count += 1;
                                     found = true;
                                     break;
@@ -184,7 +184,7 @@ class ProductModel extends Model {
                             }
                             if (!found) {
                                 product.associatedProducts.push({
-                                    ean: eanProduct.ean,
+                                    ean: eanProduct,
                                     count: 1
                                 });
                             }
