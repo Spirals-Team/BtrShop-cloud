@@ -155,7 +155,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Product'
+              type: string
       responses:
         '200':
           description: Expected response to a valid request

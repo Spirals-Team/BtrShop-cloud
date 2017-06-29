@@ -95,7 +95,7 @@ function checkEans(eans) {
     eans.forEach((item) => {
         if (!item.ean || typeof(item.ean) !== 'string') {
             queryCheck = {
-                message: `Ean of Product : ${JSON.stringify(beacon)} is not valid.
+                message: `Ean of Product : ${JSON.stringify(item)} is not valid.
       Require array of {"ean": "string"}`,
                 code: 400
             };
