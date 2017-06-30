@@ -289,24 +289,28 @@ class ProductController extends Controller {
 
     } // END : findByAssociation
 
-    addAssociation(req, res, next) {
+    addAssociations(req, res, next) {
         const resCheck = checkEans(req.body);
+        const productsReturned = [];
 
         if (resCheck.code !== 200) {
             res.status(resCheck.code).send(resCheck.message);
         } else {
-            productFacade.addAssociation(req.query.ean, req.body)
-                .then((collection) => {
-                    if (collection === null || collection.length === 0) {
+            req.body.forEach((eanProduct) => {
+                productFacade.addAssociation(eanProduct, req.body)
+                .then((product) => {
+                    if (product === null) {
                         res.status(404).send('No product found with this ean');
                         return;
                     }
-                    return res.status(200).json(collection);
+                    productsReturned.push(product);
                 })
                 .catch(err => next(err));
+            });
+            return res.status(200).json(productsReturned);
         }
 
-    } // END : addAssociation
+    } // END : addAssociations
 
 }
 

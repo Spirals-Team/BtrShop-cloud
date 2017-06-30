@@ -166,28 +166,30 @@ class ProductModel extends Model {
                 if (!err) {
                     console.log(associations);
                     associations.forEach((eanProduct) => {
-                        if (product.associatedProducts === null) {
-                            const associatedProducts = [];
-                            associatedProducts.push({
-                                ean: eanProduct,
-                                count: 1
-                            });
-                            product.associatedProducts = associatedProducts;
-                        } else {
-                            let found = false;
-                            for (let i = 0; i < product.associatedProducts.length; i++) {
-                                if (product.associatedProducts[i].ean === eanProduct) {
-                                    product.associatedProducts[i].count += 1;
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            if (!found) {
-                                product.associatedProducts.push({
-                                    ean: eanProduct,
-                                    count: 1
-                                });
-                            }
+                        if (product.ean != eanProduct) {
+		                if (product.associatedProducts === null) {
+		                    const associatedProducts = [];
+		                    associatedProducts.push({
+		                        ean: eanProduct,
+		                        count: 1
+		                    });
+		                    product.associatedProducts = associatedProducts;
+		                } else {
+		                    let found = false;
+		                    for (let i = 0; i < product.associatedProducts.length; i++) {
+		                        if (product.associatedProducts[i].ean === eanProduct) {
+		                            product.associatedProducts[i].count += 1;
+		                            found = true;
+		                            break;
+		                        }
+		                    }
+		                    if (!found) {
+		                        product.associatedProducts.push({
+		                            ean: eanProduct,
+		                            count: 1
+		                        });
+		                    }
+		                }
                         }
                     });
                     productSchema.update({
