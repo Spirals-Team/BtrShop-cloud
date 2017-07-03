@@ -11,8 +11,7 @@ services:
     links:
       - mongo
     environment:
-      - MONGO_DB_URI=mongodb://mongo:27017/btrshop-cloud
-
+      - MONGODB_URI=mongodb://mongo:27017/btrshop-cloud
 
   mongo:
     image: mongo
