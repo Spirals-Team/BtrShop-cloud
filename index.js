@@ -15,7 +15,9 @@ const subpath    = express();
 const swagger    = require('swagger-node-express').createNew(subpath);
 
 mongoose.Promise = bluebird;
-mongoose.connect(config.mongo.url);
+mongoose.connect(config.mongo.url, {
+  useMongoClient: true
+});
 
 // Validator options
 const options = expressValidator({
