@@ -674,6 +674,7 @@ describe('Products', () => {
                 .end((err, res) => {
                     if (!err) {
                         res.body.length.should.be.equal(2);
+                        res.body[1].associatedProducts.length.should.be.equal(2);
                         res.body[0].associatedProducts[0].ean.should.be.a.String();
                         res.body[0].associatedProducts[0].count.should.be.a.Number();
                     }
