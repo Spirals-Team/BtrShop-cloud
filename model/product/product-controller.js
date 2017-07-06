@@ -74,7 +74,7 @@ function checkArrayBeacon(query) {
 
     let beacons = query.uuids;
     // uuid existe
-    if (!beacons && !Array.isArray(beacons)) {
+    if (!beacons || !Array.isArray(beacons)) {
         return {
             message: 'Uuids are not an array',
             code: 400
@@ -88,6 +88,13 @@ function checkEans(eans) {
     if (!Array.isArray(eans)) {
         return {
             message: 'Eans are not an array',
+            code: 400
+        };
+    }
+
+    if(eans.length === 0){
+        return{
+            message: 'Empty array of eans',
             code: 400
         };
     }
@@ -242,7 +249,6 @@ class ProductController extends Controller {
             res.status(resCheck.code).send(resCheck.message);
             return;
         }
-
         return productFacade
             .findProductsByBeacons(req.query.uuids)
             .then((collection) => {
@@ -296,18 +302,24 @@ class ProductController extends Controller {
         if (resCheck.code !== 200) {
             res.status(resCheck.code).send(resCheck.message);
         } else {
-            req.body.forEach((eanProduct) => {
-                productFacade.addAssociation(eanProduct, req.body)
-                .then((product) => {
-                    if (product === null) {
+            var i = 0;
+            req.body.forEach((product) => {
+                productFacade.addAssociation(product, req.body)
+                .then((obj) => {
+                    i++;
+                    if (obj === null) {
                         res.status(404).send('No product found with this ean');
                         return;
                     }
-                    productsReturned.push(product);
+                    else {
+                        productsReturned.push(obj);
+                        if(i === req.body.length) {
+                            return res.status(200).json(productsReturned);
+                        }
+                    }
                 })
                 .catch(err => next(err));
             });
-            return res.status(200).json(productsReturned);
         }
 
     } // END : addAssociations

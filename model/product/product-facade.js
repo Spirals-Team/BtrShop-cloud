@@ -140,7 +140,6 @@ class ProductModel extends Model {
 
     findProductsByAssociation(eansProducts) {
 
-
         eansProducts.forEach((product, index, array) => {
             array[index] = array[index].toUpperCase();
         });
@@ -164,7 +163,6 @@ class ProductModel extends Model {
             })
             .exec((err, product) => {
                 if (!err) {
-                    console.log(associations);
                     associations.forEach((eanProduct) => {
                         if (product.ean != eanProduct) {
 		                if (product.associatedProducts === null) {
