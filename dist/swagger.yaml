@@ -143,14 +143,9 @@ paths:
       tags:
         - products
       parameters:
-        - name: ean
-          in: path
-          required: true
-          description: The ean of the product
-          type: string
         - name: eans
           in: body
-          description: eans of products to be associated
+          description: eans of products you want to associate
           required: true
           schema:
             type: array
@@ -158,9 +153,11 @@ paths:
               type: string
       responses:
         '200':
-          description: Expected response to a valid request
+          description: An array with the products modified (with new associations)
           schema:
-            $ref: '#/definitions/Product'
+            type: array
+            items:
+             $ref: '#/definitions/Product'
         default:
           description: unexpected error
           schema:

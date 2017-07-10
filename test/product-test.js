@@ -661,14 +661,11 @@ describe('Products', () => {
 
         it('should add recomendations', (done) => {
             server
-                .post('/products/recommendation?ean=5449000017888')
+                .post('/products/recommendation')
                 .send(
-                    [{
-                            ean: '0885909462872'
-                        },
-                        {
-                            ean: '5449000052179'
-                        }
+                    [
+                            '0885909462872',
+                            '5449000052179'
                     ]
                 )
                 .expect('Content-type', /json/)
@@ -676,45 +673,21 @@ describe('Products', () => {
                 .expect(200)
                 .end((err, res) => {
                     if (!err) {
-                        res.body.associatedProducts.length.should.be.equal(2);
-                        res.body.associatedProducts[0].ean.should.be.a.String();
-                        res.body.associatedProducts[0].count.should.be.a.Number();
+                        res.body.length.should.be.equal(2);
+                        res.body[1].associatedProducts.length.should.be.equal(2);
+                        res.body[0].associatedProducts[0].ean.should.be.a.String();
+                        res.body[0].associatedProducts[0].count.should.be.a.Number();
                     }
 
                     done();
                 });
         });
 
-        it('should add recomendations', (done) => {
+        it('should return an 400 because of empty array', (done) => {
             server
-                .post('/products/recommendation?ean=0885909462872')
+                .post('/products/recommendation')
                 .send(
-                    [{
-                        ean: '5449000052179'
-                    }]
-                )
-                .expect('Content-type', /json/)
-                .set('Accept', 'application/json')
-                .expect(200)
-                .end((err, res) => {
-                    if (!err) {
-                        res.body.associatedProducts.length.should.be.equal(1);
-                        res.body.associatedProducts[0].ean.should.be.a.String();
-                        res.body.associatedProducts[0].count.should.be.a.Number();
-                    }
-
-                    done();
-                });
-        });
-
-        it('should return an 404 cause of empty ean in array', (done) => {
-            server
-                .post('/products/0885909462872')
-                .send(
-                    [{
-                            ean: '5449000017888'
-                        },
-                        {}
+                    [
                     ]
                 )
                 .expect('Content-type', /json/)
@@ -724,6 +697,24 @@ describe('Products', () => {
                     done();
                 });
         });
+
+        it('should return an 404 because one ean does not exist', (done) => {
+            server
+                .post('/products/recommendation')
+                .send(
+                    [
+                        '0885909462872',
+                        '6969696969696',
+                    ]
+                )
+                .expect('Content-type', /json/)
+                .set('Accept', 'application/json')
+                .expect(404)
+                .end((err, res) => {
+                    done();
+                });
+        });
+
     }); // End : describe : addRecommendations
 
     describe('Recommendation', () => {

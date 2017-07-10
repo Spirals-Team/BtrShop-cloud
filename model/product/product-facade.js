@@ -140,7 +140,6 @@ class ProductModel extends Model {
 
     findProductsByAssociation(eansProducts) {
 
-
         eansProducts.forEach((product, index, array) => {
             array[index] = array[index].toUpperCase();
         });
@@ -164,30 +163,36 @@ class ProductModel extends Model {
             })
             .exec((err, product) => {
                 if (!err) {
-                    console.log(associations);
                     associations.forEach((eanProduct) => {
-                        if (product.associatedProducts === null) {
-                            const associatedProducts = [];
-                            associatedProducts.push({
-                                ean: eanProduct,
-                                count: 1
-                            });
-                            product.associatedProducts = associatedProducts;
-                        } else {
-                            let found = false;
-                            for (let i = 0; i < product.associatedProducts.length; i++) {
-                                if (product.associatedProducts[i].ean === eanProduct) {
-                                    product.associatedProducts[i].count += 1;
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            if (!found) {
-                                product.associatedProducts.push({
-                                    ean: eanProduct,
-                                    count: 1
+                        if (product.ean != eanProduct) {
+		                if (product.associatedProducts === null) {
+		                    const associatedProducts = [];
+		                    associatedProducts.push({
+		                        ean: eanProduct,
+		                        count: 1
+		                    });
+		                    product.associatedProducts = associatedProducts;
+		                } else {
+		                    let found = false;
+		                    for (let i = 0; i < product.associatedProducts.length; i++) {
+		                        if (product.associatedProducts[i].ean === eanProduct) {
+		                            product.associatedProducts[i].count += 1;
+		                            found = true;
+		                            break;
+		                        }
+		                    }
+		                    if (!found) {
+		                        product.associatedProducts.push({
+		                            ean: eanProduct,
+		                            count: 1
+		                        });
+		                    }
+		                }
+                                product.associatedProducts.sort(function (a,b){
+                                    if(a.count == b.count) return 0;
+                                    if(a.count < b.count) return 1;
+                                    if(a.count > b.count) return -1;
                                 });
-                            }
                         }
                     });
                     productSchema.update({
