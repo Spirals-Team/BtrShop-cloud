@@ -804,4 +804,27 @@ describe('Products', () => {
         });
 
     });
+
+    
+    describe('Reset Beacons', () => {
+
+        it('should return a product with no associated products', (done) => {
+            server
+                .patch('/products/nearby')
+                .query({
+                    ean: '0885909462872'
+                })
+                .send(
+                    []
+                )
+                .expect('Content-type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    res.body.ean.should.be.eql('0885909462872');
+                    console.log(res.body.beacons);
+                    res.body.beacons.length.should.be.eql(0);
+                    done();
+                });
+        });
+    });
 });
