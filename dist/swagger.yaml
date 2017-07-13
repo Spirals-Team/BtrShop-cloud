@@ -83,7 +83,7 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-	    
+
   '/products/nearby':
      get:
         summary: Get list of products by beacons
@@ -110,8 +110,35 @@ paths:
             description: unexpected error
             schema:
               $ref: '#/definitions/Error'
-
-  '/products/recommendation':
+     patch:
+        summary: Update the beacons associated
+        operationId: resetBeacons
+        tags:
+          - products
+        parameters:
+          - name: ean
+            in: query
+            description: ean of the product whose beacons you want to change
+            required: true
+            type: string
+          - name: uuids
+            in: body
+            description: new beacons to associate
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/BeaconAsso'
+        responses:
+	        200:
+	          description: the updated product
+	          schema:
+               $ref: '#/definitions/Product'
+	        default:
+	          description: unexpected error
+	          schema:
+	            $ref: '#/definitions/Error'
+	
+	'/products/recommendation':
      get:
         summary: Get list of products by associations
         operationId: getProductByAssociation
@@ -162,8 +189,8 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-
-  '/products/{ean}':
+	
+	'/products/{ean}':
     get:
       summary: Info for a specific product
       operationId: showProductByEan
@@ -212,7 +239,8 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
-  /beacons:
+	
+	/beacons:
     get:
       summary: List all beacons
       operationId: listBeacon
@@ -386,6 +414,15 @@ definitions:
       uuid:
         type: string
       dist:
+        type: number
+  BeaconAsso:
+    required:
+      - uuid
+      - count
+    properties:
+      uuid:
+        type: string
+      count:
         type: number
   Error:
     required:
