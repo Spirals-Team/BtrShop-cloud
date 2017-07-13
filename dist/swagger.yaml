@@ -191,6 +191,35 @@ paths:
           description: unexpected error
           schema:
             $ref: '#/definitions/Error'
+     patch:
+      summary: Update associations
+      operationId: updateAssociations
+      tags:
+        - products
+      parameters:
+        - name: ean
+          in: query
+          description: ean of product
+          required: true
+          type: string
+        - name: associations
+          in: body
+          description: new associations
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Association'
+      responses:
+        '200':
+          description: the updated product
+          schema:
+            type:
+              $ref: '#/definitions/Product'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/Error'
 
   '/products/{ean}':
     get:
@@ -356,6 +385,15 @@ definitions:
   AssociatedBeacon:
     required:
       - uuid
+      - count
+    properties:
+      uuid:
+        type: string
+      count:
+        type: number
+  Association:
+    required:
+      - ean
       - count
     properties:
       uuid:

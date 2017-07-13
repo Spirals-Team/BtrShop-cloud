@@ -219,7 +219,25 @@ class ProductController extends Controller {
 			    })
 			    .catch(err => next(err));
 	    }
-	}
+    }
+
+
+    resetAssociations(req, res, next) {
+	    const resCheck = checkParam(req, req.query);
+	    if (resCheck.code != 200) {
+			res.status(res.Check.code).send(resCheck.message);
+	    } else {
+			return productFacade.resetAssociations(req.query.ean,req.body)
+			    .then((collection) => {
+			        if (collection === null || collection.length === 0) {
+			            res.status(404).send('No product found with this ean');
+			            return;
+			        }
+			        return res.status(200).json(collection);
+			    })
+			    .catch(err => next(err));
+	    }
+    }
 
     findByEan(req, res, next) {
         const resCheck = checkParam(req, req.params, true);

@@ -13,7 +13,8 @@ router.route('/nearby')
 
 router.route('/recommendation')
     .get((...args) => controller.findByAssociation(...args))
-    .post((...args) => controller.addAssociations(...args));
+    .post((...args) => controller.addAssociations(...args))
+    .patch((...args) => controller.resetAssociations(...args));
 
 router.route('/:ean')
   .get((...args) => controller.findByEan(...args))

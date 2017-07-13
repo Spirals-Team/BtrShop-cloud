@@ -20,16 +20,36 @@ class ProductModel extends Model {
         return productSchema.findOne({
             ean: eanProduct
         }).then((product) => {
-		    product.beacons = newBeacons;
+            if(product != null){
+                product.beacons = newBeacons;
+                productSchema.update({
+                    ean: product.ean
+                }, product, {
+		    upsert: true
+                }).exec();
+            }
+            return productSchema.findOne({
+                ean: eanProduct
+            });
+        });
+    }
 
-			productSchema.update({
-				ean: product.ean
-			}, product, {
-				upsert: true
-			}).exec();
+    resetAssociations(eanProduct, newAssociations) {
+        return productSchema.findOne({
+            ean: eanProduct
+        }).then((product) => {
+            if(product != null){
+                product.associatedProducts = newAssociations;
+
+                productSchema.update({
+                    ean: product.ean
+                }, product, {
+                    upsert: true
+                }).exec();
+            }
 
             return productSchema.findOne({
-                ean: product.ean
+                ean: eanProduct
             });
         });
     }
