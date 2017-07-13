@@ -16,24 +16,6 @@ class ProductModel extends Model {
             .exec();
     }
 
-    resetBeacons(eanProduct, newBeacons) {
-        return productSchema.findOne({
-            ean: eanProduct
-        }).then((product) => {
-		    product.beacons = newBeacons;
-
-			productSchema.update({
-				ean: product.ean
-			}, product, {
-				upsert: true
-			}).exec();
-
-            return productSchema.findOne({
-                ean: product.ean
-            });
-        });
-    }
-
     addPosition(eanQuery, positions) {
 
         let position = null;

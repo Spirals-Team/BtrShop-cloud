@@ -6,10 +6,9 @@ router.route('/')
   .get((...args) => controller.find(...args))
   .post((...args) => controller.create(...args))
   .delete((...args) => controller.removeByEan(...args));
-;
+
 router.route('/nearby')
-    .get((...args) => controller.findByBeacons(...args))
-    .patch((...args) => controller.resetBeacons(...args));
+    .get((...args) => controller.findByBeacons(...args));
 
 router.route('/recommendation')
     .get((...args) => controller.findByAssociation(...args))
