@@ -133,8 +133,7 @@ paths:
         '200':
           description: the updated product
           schema:
-            type:
-              $ref: '#/definitions/Product'
+            $ref: '#/definitions/Product'
         default:
           description: unexpected error
           schema:
@@ -214,8 +213,7 @@ paths:
         '200':
           description: the updated product
           schema:
-            type:
-              $ref: '#/definitions/Product'
+            $ref: '#/definitions/Product'
         default:
           description: unexpected error
           schema:
@@ -396,7 +394,7 @@ definitions:
       - ean
       - count
     properties:
-      uuid:
+      ean:
         type: string
       count:
         type: number
