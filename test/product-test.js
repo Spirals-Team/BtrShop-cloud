@@ -808,7 +808,7 @@ describe('Products', () => {
     
     describe('Reset Beacons', () => {
 
-        it('should return a product with no associated products', (done) => {
+        it('should return a product with no associated beacon', (done) => {
             server
                 .patch('/products/nearby')
                 .query({
@@ -821,10 +821,83 @@ describe('Products', () => {
                 .expect(200)
                 .end((err, res) => {
                     res.body.ean.should.be.eql('0885909462872');
-                    console.log(res.body.beacons);
                     res.body.beacons.length.should.be.eql(0);
                     done();
                 });
         });
+
+        it('should return a product with new associated beacons', (done) => {
+            server
+                .patch('/products/nearby')
+                .query({
+                    ean: '5449000052179'
+                })
+                .send(
+                    [{
+                        uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4FBB8A639',
+                        count: '3'
+                      },
+                     {
+                        uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4F34DB6A5',
+                        count: '1'
+                      },]
+                )
+                .expect('Content-type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    res.body.ean.should.be.eql('5449000052179');
+                    res.body.beacons.length.should.be.eql(2);
+                    res.body.beacons[0].count.should.be.eql(3);
+                    done();
+                });
+        });
+    });
+
+    describe('Reset associated products', () => {
+
+        it('should return a product with new associated product', (done) => {
+            server
+                .patch('/products/recommendation')
+                .query({
+                    ean: '0885909462872'
+                })
+                .send(
+                    []
+                )
+                .expect('Content-type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    res.body.ean.should.be.eql('0885909462872');
+                    res.body.associatedProducts.length.should.be.eql(0);
+                    done();
+                });
+        });
+
+        it('should return a product with no associated beacons', (done) => {
+            server
+                .patch('/products/recommendation')
+                .query({
+                    ean: '5449000052179'
+                })
+                .send(
+                    [{
+                        ean: '0885909462872',
+                        count: '3'
+                      },
+                     {
+                        ean: '5449000017888',
+                        count: '1'
+                      },]
+                )
+                .expect('Content-type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    res.body.ean.should.be.eql('5449000052179');
+                    res.body.associatedProducts.length.should.be.eql(2);
+                    res.body.associatedProducts[0].count.should.be.eql(3);
+                    done();
+                });
+        });
+        
     });
 });
