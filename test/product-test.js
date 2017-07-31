@@ -306,15 +306,20 @@ describe('Products', () => {
                 .send(
                     [{
                             uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
-                            dist: 0.02
+                            dist: 0.02,
+                            closeCoef: 1,
+                            farCoef: 0
                         },
                         {
                             uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A',
-                            dist: 0.03
+                            dist: 0.03,
+                            closeCoef: 0
                         },
                         {
                             uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44',
-                            dist: 0.04
+                            dist: 0.04,
+                            closeCoef: 1,
+                            farCoef: 0
                         }
                     ]
                 )
@@ -338,6 +343,10 @@ describe('Products', () => {
                     res.body.beacons.length.should.be.equal(3);
                     res.body.beacons[0].uuid.should.be.a.String();
                     res.body.beacons[0].count.should.be.a.Number();
+
+                    res.body.reachedBeacons.length.should.be.equal(1);
+                    res.body.reachedBeacons[0].fingerPrint.length.should.be.equal(3);
+                    res.body.reachedBeacons[0].fingerPrint[0].uuid.should.be.equal('D0D3FA86-CA76-45EC-9BD9-6AF4278200B9');
 
                     done();
                 });

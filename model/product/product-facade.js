@@ -114,6 +114,18 @@ class ProductModel extends Model {
                                 lng: math.median(arrayLng)
                             };
                         }
+                        
+                        const fingerPrint = [];
+                        product.reachedBeacons.push(fingerPrint);
+
+                        positions.forEach((position) => {
+                            product.reachedBeacons[product.reachedBeacons.length-1].fingerPrint.push({
+                                uuid: position.uuid,
+                                close: position.closeCoef,
+                                far: position.farCoef
+                            });
+                        });
+                        
 
                         // Save beacons uuid and count in product
                         validBeacons.forEach((beacon) => {

@@ -33,9 +33,19 @@ const ProductEan = new Schema({
   count: { type: Number }
 }, { _id : false, timestamps: false  });
 
+const ReachedBeacon = new Schema({
+  uuid: { type: String, required: true },
+  close: { type: Number },
+  far: { type: Number }
+}, { _id : false, timestamps: false  });
+
 const productSchema = new Schema({
   averagePosition : { type: Position },
   beacons: { type: [BeaconUuid] },
+  reachedBeacons: [{
+    fingerPrint: 
+      {type: [ReachedBeacon]}
+  }],
   associatedProducts : { type: [ProductEan]},
   brand: { type: String },
   category : { type: String },
