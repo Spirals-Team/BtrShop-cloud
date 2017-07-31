@@ -307,19 +307,19 @@ describe('Products', () => {
                     [{
                             uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
                             dist: 0.02,
-                            closeCoef: 1,
-                            farCoef: 0
+                            close: 1,
+                            far: 0
                         },
                         {
                             uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A',
                             dist: 0.03,
-                            closeCoef: 0
+                            close: 0
                         },
                         {
                             uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44',
                             dist: 0.04,
-                            closeCoef: 1,
-                            farCoef: 0
+                            close: 1,
+                            far: 0
                         }
                     ]
                 )
@@ -343,10 +343,11 @@ describe('Products', () => {
                     res.body.beacons.length.should.be.equal(3);
                     res.body.beacons[0].uuid.should.be.a.String();
                     res.body.beacons[0].count.should.be.a.Number();
-
+ 
                     res.body.reachedBeacons.length.should.be.equal(1);
                     res.body.reachedBeacons[0].fingerPrint.length.should.be.equal(3);
                     res.body.reachedBeacons[0].fingerPrint[0].uuid.should.be.equal('D0D3FA86-CA76-45EC-9BD9-6AF4278200B9');
+                    res.body.reachedBeacons[0].fingerPrint[0].close.should.be.equal(1);
 
                     done();
                 });
@@ -527,15 +528,21 @@ describe('Products', () => {
                 .send(
                     [{
                             uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
-                            dist: 0.02
+                            dist: 0.02,
+                            close: 1
+                            
                         },
                         {
                             uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A",
-                            dist: 0.03
+                            dist: 0.03,
+                            close: 1,
+                            far: 0
                         },
                         {
                             uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44",
-                            dist: 0.04
+                            dist: 0.04,
+                            close: 0,
+                            far: 1
                         }
                     ]
                 )
@@ -550,15 +557,21 @@ describe('Products', () => {
                         .send(
                             [{
                                     uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
-                                    dist: 0.01
+                                    dist: 0.01,
+                                    close: 0,
+                                    far: 1
                                 },
                                 {
                                     uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0",
-                                    dist: 0.05
+                                    dist: 0.05,
+                                    close: 1,
+                                    far: 0
                                 },
                                 {
                                     uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44",
-                                    dist: 0.02
+                                    dist: 0.02,
+                                    close: 0,
+                                    far: 1
                                 }
                             ]
                         )
@@ -577,6 +590,12 @@ describe('Products', () => {
                             res.body.beacons.length.should.be.equal(4);
                             res.body.beacons[0].uuid.should.be.a.String();
                             res.body.beacons[0].count.should.be.a.Number();
+
+                            res.body.reachedBeacons.length.should.be.equal(2);
+                            res.body.reachedBeacons[0].fingerPrint[0].uuid.should.be.equal('D0D3FA86-CA76-45EC-9BD9-6AF4278200B9');
+                            res.body.beaconsPattern.length.should.be.equal(4);
+                            res.body.beaconsPattern[0].count.should.be.equal(2);
+                            res.body.beaconsPattern[0].close.should.be.equal(0.5);
 
                             done();
                         }); // End of second end function
