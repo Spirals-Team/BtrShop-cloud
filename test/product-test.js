@@ -606,6 +606,30 @@ describe('Products', () => {
 
     describe('Nearby', () => {
 
+        it('should add multiple beacons and one position', (done) => {
+
+            server
+                .get('/products/nearby')
+                .send(
+                    [{
+                            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9'
+                        },
+                        {
+                            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0'
+                        }
+                    ]
+                )
+                .expect('Content-type', /json/)
+                .set('Accept', 'application/json')
+                .expect(200)
+                .end((err, res) => {
+                    res.body.length.should.be.eql(1);
+                    res.body[0].ean.should.be.eql('0885909462872');
+                    done();
+                });
+        });
+
+/*
         it('should return 400 cause of bad param', (done) => {
             server
                 .get('/products/nearby?test=0885909462872')
@@ -681,7 +705,7 @@ describe('Products', () => {
                     done();
                 });
         });
-
+*/
     });
 
     //AddRecommendation

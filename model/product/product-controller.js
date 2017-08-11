@@ -72,9 +72,8 @@ function checkArrayBeacon(query) {
         };
     }
 
-    let beacons = query.uuids;
     // uuid existe
-    if (!beacons || !Array.isArray(beacons)) {
+    if (!query || !Array.isArray(query)) {
         return {
             message: 'Uuids are not an array',
             code: 400
@@ -277,14 +276,14 @@ class ProductController extends Controller {
     } // END : removeByEan
 
     findByBeacons(req, res, next) {
+        const resCheck = checkArrayBeacon(req.body);
 
-        const resCheck = checkArrayBeacon(req.query);
         if (resCheck.code !== 200) {
             res.status(resCheck.code).send(resCheck.message);
             return;
         }
         return productFacade
-            .findProductsByBeacons(req.query.uuids)
+            .findProductsByBeacons(req.body)
             .then((collection) => {
                 console.log(collection);
                 return res.status(200).json(collection);

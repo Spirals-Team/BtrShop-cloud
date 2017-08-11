@@ -224,14 +224,17 @@ class ProductModel extends Model {
                 }));
     }
 
-    findProductsByBeacons(uuidsBeacons) {
+    findProductsByBeacons(beacons) {
+
+        const uuidsBeacons = [];
+
+        beacons.forEach((beacon) => {
+            uuidsBeacons.push(beacon.uuid);
+        });
 
         uuidsBeacons.forEach((beacon, index, array) => {
             array[index] = array[index].toUpperCase();
         });
-
-        console.log(uuidsBeacons);
-
 
         return productSchema
             .find({
