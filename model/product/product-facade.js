@@ -16,6 +16,44 @@ class ProductModel extends Model {
             .exec();
     }
 
+    resetBeacons(eanProduct, newBeacons) {
+        return productSchema.findOne({
+            ean: eanProduct
+        }).then((product) => {
+            if(product != null){
+                product.beacons = newBeacons;
+                productSchema.update({
+                    ean: product.ean
+                }, product, {
+		    upsert: true
+                }).exec();
+            }
+            return productSchema.findOne({
+                ean: eanProduct
+            });
+        });
+    }
+
+    resetAssociations(eanProduct, newAssociations) {
+        return productSchema.findOne({
+            ean: eanProduct
+        }).then((product) => {
+            if(product != null){
+                product.associatedProducts = newAssociations;
+
+                productSchema.update({
+                    ean: product.ean
+                }, product, {
+                    upsert: true
+                }).exec();
+            }
+
+            return productSchema.findOne({
+                ean: eanProduct
+            });
+        });
+    }
+
     addPosition(eanQuery, positions) {
 
         let position = null;
@@ -76,6 +114,73 @@ class ProductModel extends Model {
                                 lng: math.median(arrayLng)
                             };
                         }
+                        
+                        //fingerprinting
+                        var sizeReachedBeacons = 20;
+
+                        const fingerPrint = [];
+                        product.reachedBeacons.push(fingerPrint);
+
+                        positions.forEach((position) => {
+                            product.reachedBeacons[product.reachedBeacons.length-1].fingerPrint.push({
+                                uuid: position.uuid,
+                                close: position.close,
+                                far: position.far
+                            });
+
+                            if(product.reachedBeacons.length > sizeReachedBeacons)
+                                product.reachedBeacons.shift();
+                        });
+
+                        product.beaconsPattern = [];
+                        for(let i = 0; i < product.reachedBeacons.length; i++){
+                            for(let j = 0; j < product.reachedBeacons[i].fingerPrint.length; j++){
+
+                                let beacon = product.reachedBeacons[i].fingerPrint[j];
+
+                                if (product.beaconsPattern === null) {
+		                const beaconsPattern = [];
+		                beaconsPattern.push({
+		                    uuid: beacon.uuid,
+                                    close: beacon.close,
+                                    far: beacon.far,
+                                    count: 1
+		                });
+		                product.beaconsPattern = beaconsPattern;
+		                } else {
+		                    let found = false;
+		                    for (let i = 0; i < product.beaconsPattern.length; i++) {
+		                        if (product.beaconsPattern[i].uuid === beacon.uuid) {
+		                            product.beaconsPattern[i].count += 1;
+                                            product.beaconsPattern[i].close += beacon.close;
+                                            product.beaconsPattern[i].far += beacon.far;
+		                            found = true;
+		                            break;
+		                        }
+		                    }
+		                    if (!found) {
+		                        product.beaconsPattern.push({
+		                            uuid: beacon.uuid,
+                                            close: beacon.close,
+                                            far: beacon.far,
+                                            count: 1
+		                        });
+		                    }
+		                }
+                            }
+                        }
+
+                        for (let i = 0; i < product.beaconsPattern.length; i++) {
+		            product.beaconsPattern[i].close = product.beaconsPattern[i].close / product.beaconsPattern[i].count;
+                            product.beaconsPattern[i].far = product.beaconsPattern[i].far / product.beaconsPattern[i].count;
+		        }
+                        
+                        product.beaconsPattern.sort(function (a,b){
+                            if(a.count == b.count) return 0;
+                            if(a.count < b.count) return 1;
+                            if(a.count > b.count) return -1;
+                        });
+                        
 
                         // Save beacons uuid and count in product
                         validBeacons.forEach((beacon) => {
@@ -119,14 +224,17 @@ class ProductModel extends Model {
                 }));
     }
 
-    findProductsByBeacons(uuidsBeacons) {
+    findProductsByBeacons(beacons) {
+
+        const uuidsBeacons = [];
+
+        beacons.forEach((beacon) => {
+            uuidsBeacons.push(beacon.uuid);
+        });
 
         uuidsBeacons.forEach((beacon, index, array) => {
             array[index] = array[index].toUpperCase();
         });
-
-        console.log(uuidsBeacons);
-
 
         return productSchema
             .find({
@@ -188,13 +296,15 @@ class ProductModel extends Model {
 		                        });
 		                    }
 		                }
-                                product.associatedProducts.sort(function (a,b){
-                                    if(a.count == b.count) return 0;
-                                    if(a.count < b.count) return 1;
-                                    if(a.count > b.count) return -1;
-                                });
                         }
                     });
+
+                    product.associatedProducts.sort(function (a,b){
+                        if(a.count == b.count) return 0;
+                        if(a.count < b.count) return 1;
+                        if(a.count > b.count) return -1;
+                    });
+
                     productSchema.update({
                         ean: eanQuery
                     }, product, {

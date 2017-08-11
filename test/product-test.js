@@ -306,15 +306,20 @@ describe('Products', () => {
                 .send(
                     [{
                             uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9',
-                            dist: 0.02
+                            dist: 0.02,
+                            close: 1,
+                            far: 0
                         },
                         {
                             uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A',
-                            dist: 0.03
+                            dist: 0.03,
+                            close: 0
                         },
                         {
                             uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44',
-                            dist: 0.04
+                            dist: 0.04,
+                            close: 1,
+                            far: 0
                         }
                     ]
                 )
@@ -338,6 +343,11 @@ describe('Products', () => {
                     res.body.beacons.length.should.be.equal(3);
                     res.body.beacons[0].uuid.should.be.a.String();
                     res.body.beacons[0].count.should.be.a.Number();
+ 
+                    res.body.reachedBeacons.length.should.be.equal(1);
+                    res.body.reachedBeacons[0].fingerPrint.length.should.be.equal(3);
+                    res.body.reachedBeacons[0].fingerPrint[0].uuid.should.be.equal('D0D3FA86-CA76-45EC-9BD9-6AF4278200B9');
+                    res.body.reachedBeacons[0].fingerPrint[0].close.should.be.equal(1);
 
                     done();
                 });
@@ -518,15 +528,21 @@ describe('Products', () => {
                 .send(
                     [{
                             uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
-                            dist: 0.02
+                            dist: 0.02,
+                            close: 1
+                            
                         },
                         {
                             uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4C304C06A",
-                            dist: 0.03
+                            dist: 0.03,
+                            close: 1,
+                            far: 0
                         },
                         {
                             uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44",
-                            dist: 0.04
+                            dist: 0.04,
+                            close: 0,
+                            far: 1
                         }
                     ]
                 )
@@ -541,15 +557,21 @@ describe('Products', () => {
                         .send(
                             [{
                                     uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4278200B9",
-                                    dist: 0.01
+                                    dist: 0.01,
+                                    close: 0,
+                                    far: 1
                                 },
                                 {
                                     uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0",
-                                    dist: 0.05
+                                    dist: 0.05,
+                                    close: 1,
+                                    far: 0
                                 },
                                 {
                                     uuid: "D0D3FA86-CA76-45EC-9BD9-6AF4AD649F44",
-                                    dist: 0.02
+                                    dist: 0.02,
+                                    close: 0,
+                                    far: 1
                                 }
                             ]
                         )
@@ -569,6 +591,12 @@ describe('Products', () => {
                             res.body.beacons[0].uuid.should.be.a.String();
                             res.body.beacons[0].count.should.be.a.Number();
 
+                            res.body.reachedBeacons.length.should.be.equal(2);
+                            res.body.reachedBeacons[0].fingerPrint[0].uuid.should.be.equal('D0D3FA86-CA76-45EC-9BD9-6AF4278200B9');
+                            res.body.beaconsPattern.length.should.be.equal(4);
+                            res.body.beaconsPattern[0].count.should.be.equal(2);
+                            res.body.beaconsPattern[0].close.should.be.equal(0.5);
+
                             done();
                         }); // End of second end function
                 }); // End of first end function
@@ -578,6 +606,30 @@ describe('Products', () => {
 
     describe('Nearby', () => {
 
+        it('should add multiple beacons and one position', (done) => {
+
+            server
+                .get('/products/nearby')
+                .send(
+                    [{
+                            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4278200B9'
+                        },
+                        {
+                            uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4694F32B0'
+                        }
+                    ]
+                )
+                .expect('Content-type', /json/)
+                .set('Accept', 'application/json')
+                .expect(200)
+                .end((err, res) => {
+                    res.body.length.should.be.eql(1);
+                    res.body[0].ean.should.be.eql('0885909462872');
+                    done();
+                });
+        });
+
+/*
         it('should return 400 cause of bad param', (done) => {
             server
                 .get('/products/nearby?test=0885909462872')
@@ -653,7 +705,7 @@ describe('Products', () => {
                     done();
                 });
         });
-
+*/
     });
 
     //AddRecommendation
@@ -803,5 +855,101 @@ describe('Products', () => {
                 });
         });
 
+    });
+
+    
+    describe('Reset Beacons', () => {
+
+        it('should return a product with no associated beacon', (done) => {
+            server
+                .patch('/products/nearby')
+                .query({
+                    ean: '0885909462872'
+                })
+                .send(
+                    []
+                )
+                .expect('Content-type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    res.body.ean.should.be.eql('0885909462872');
+                    res.body.beacons.length.should.be.eql(0);
+                    done();
+                });
+        });
+
+        it('should return a product with new associated beacons', (done) => {
+            server
+                .patch('/products/nearby')
+                .query({
+                    ean: '5449000052179'
+                })
+                .send(
+                    [{
+                        uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4FBB8A639',
+                        count: '3'
+                      },
+                     {
+                        uuid: 'D0D3FA86-CA76-45EC-9BD9-6AF4F34DB6A5',
+                        count: '1'
+                      },]
+                )
+                .expect('Content-type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    res.body.ean.should.be.eql('5449000052179');
+                    res.body.beacons.length.should.be.eql(2);
+                    res.body.beacons[0].count.should.be.eql(3);
+                    done();
+                });
+        });
+    });
+
+    describe('Reset associated products', () => {
+
+        it('should return a product with new associated product', (done) => {
+            server
+                .patch('/products/recommendation')
+                .query({
+                    ean: '0885909462872'
+                })
+                .send(
+                    []
+                )
+                .expect('Content-type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    res.body.ean.should.be.eql('0885909462872');
+                    res.body.associatedProducts.length.should.be.eql(0);
+                    done();
+                });
+        });
+
+        it('should return a product with no associated beacons', (done) => {
+            server
+                .patch('/products/recommendation')
+                .query({
+                    ean: '5449000052179'
+                })
+                .send(
+                    [{
+                        ean: '0885909462872',
+                        count: '3'
+                      },
+                     {
+                        ean: '5449000017888',
+                        count: '1'
+                      },]
+                )
+                .expect('Content-type', /json/)
+                .expect(200)
+                .end((err, res) => {
+                    res.body.ean.should.be.eql('5449000052179');
+                    res.body.associatedProducts.length.should.be.eql(2);
+                    res.body.associatedProducts[0].count.should.be.eql(3);
+                    done();
+                });
+        });
+        
     });
 });

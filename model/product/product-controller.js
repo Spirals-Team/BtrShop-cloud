@@ -72,9 +72,8 @@ function checkArrayBeacon(query) {
         };
     }
 
-    let beacons = query.uuids;
     // uuid existe
-    if (!beacons || !Array.isArray(beacons)) {
+    if (!query || !Array.isArray(query)) {
         return {
             message: 'Uuids are not an array',
             code: 400
@@ -204,9 +203,43 @@ class ProductController extends Controller {
         }
     } // END : find
 
+    resetBeacons(req, res, next) {
+	    const resCheck = checkParam(req, req.query);
+	    if (resCheck.code != 200) {
+			res.status(res.Check.code).send(resCheck.message);
+	    } else {
+			return productFacade.resetBeacons(req.query.ean,req.body)
+			    .then((collection) => {
+			        if (collection === null || collection.length === 0) {
+			            res.status(404).send('No product found with this ean');
+			            return;
+			        }
+			        return res.status(200).json(collection);
+			    })
+			    .catch(err => next(err));
+	    }
+    }
+
+
+    resetAssociations(req, res, next) {
+	    const resCheck = checkParam(req, req.query);
+	    if (resCheck.code != 200) {
+			res.status(res.Check.code).send(resCheck.message);
+	    } else {
+			return productFacade.resetAssociations(req.query.ean,req.body)
+			    .then((collection) => {
+			        if (collection === null || collection.length === 0) {
+			            res.status(404).send('No product found with this ean');
+			            return;
+			        }
+			        return res.status(200).json(collection);
+			    })
+			    .catch(err => next(err));
+	    }
+    }
+
     findByEan(req, res, next) {
         const resCheck = checkParam(req, req.params, true);
-
         if (resCheck.code !== 200) {
             res.status(resCheck.code).send(resCheck.message);
         } else {
@@ -243,14 +276,14 @@ class ProductController extends Controller {
     } // END : removeByEan
 
     findByBeacons(req, res, next) {
+        const resCheck = checkArrayBeacon(req.body);
 
-        const resCheck = checkArrayBeacon(req.query);
         if (resCheck.code !== 200) {
             res.status(resCheck.code).send(resCheck.message);
             return;
         }
         return productFacade
-            .findProductsByBeacons(req.query.uuids)
+            .findProductsByBeacons(req.body)
             .then((collection) => {
                 console.log(collection);
                 return res.status(200).json(collection);
